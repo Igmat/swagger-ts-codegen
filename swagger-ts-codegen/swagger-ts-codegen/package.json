@@ -1,0 +1,10 @@
+﻿{
+  "name": "swagger-ts-codegen",
+  "version": "0.0.0",
+  "description": "swagger-ts-codegen",
+  "main": "app.js",
+  "author": {
+    "name": "Игорь",
+    "email": ""
+  }
+}

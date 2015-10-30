@@ -1,0 +1,3 @@
+﻿# swagger-ts-codegen
+
+
