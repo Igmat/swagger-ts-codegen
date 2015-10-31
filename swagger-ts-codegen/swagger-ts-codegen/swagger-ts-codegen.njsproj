@@ -33,15 +33,26 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="swagger\swagger.json" />
+    <Content Include="templates\model.mustache" />
+    <Content Include="tsd.json" />
     <TypeScriptCompile Include="app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <TypeScriptCompile Include="Scripts\typings\node\node.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\swagger\swagger.d.ts" />
+    <TypeScriptCompile Include="typings\mustache\mustache.d.ts" />
+    <TypeScriptCompile Include="typings\node\node.d.ts" />
+    <TypeScriptCompile Include="typings\tsd.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="swagger\" />
     <Folder Include="Scripts\" />
     <Folder Include="Scripts\typings\" />
-    <Folder Include="Scripts\typings\node\" />
+    <Folder Include="Scripts\typings\swagger\" />
+    <Folder Include="templates\" />
+    <Folder Include="typings\" />
+    <Folder Include="typings\mustache\" />
+    <Folder Include="typings\node\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
