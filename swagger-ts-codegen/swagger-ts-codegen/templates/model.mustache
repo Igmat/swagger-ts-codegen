@@ -1,5 +1,16 @@
-{{className}}
-{{#properties}}
-Name: {{name}}
-Type: {{type}}
-{{/properties}}
+/// <reference path="api.d.ts" />
+
+export interface {{name}}{
+'use strict';
+    {{#properties}}
+        /**
+        * {{{description}}}
+        */
+        {{name}}:{{type}};
+    {{/properties}}
+    }
+}
+
+{{#enums}}
+{{> enum}}
+{{/enums}}
