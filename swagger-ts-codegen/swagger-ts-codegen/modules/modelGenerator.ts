@@ -1,6 +1,6 @@
 ﻿/// <reference path="../app.ts" />
 
-class ModelViewModel {
+export class ModelViewModel {
     public name: string;
     public properties: PropertyViewModel[];
     public enums: EnumViewModel[];
@@ -11,7 +11,7 @@ class ModelViewModel {
     }
 }
 
-class PropertyViewModel {
+export class PropertyViewModel {
     public name: string;
     public description: string;
     public type: string;
@@ -19,7 +19,7 @@ class PropertyViewModel {
     constructor() { }
 }
 
-class EnumViewModel {
+export class EnumViewModel {
     public name: string;
     public entities: EnumEntity[];
 
@@ -28,13 +28,13 @@ class EnumViewModel {
     }
 }
 
-class EnumEntity {
+export class EnumEntity {
     public name: string;
 
     constructor() { }
 }
 
-function generateModel(name: string, definition: Swagger.Schema): ModelViewModel {
+export function generateModel(name: string, definition: Swagger.Schema): ModelViewModel {
 
     var modelView: ModelViewModel = new ModelViewModel();
     modelView.name = name;
@@ -42,9 +42,9 @@ function generateModel(name: string, definition: Swagger.Schema): ModelViewModel
     for (var property in definition.properties) {
         var propertyView: PropertyViewModel = new PropertyViewModel();
         propertyView.name = property;
+        var propertyDesc = definition.properties[property];
         propertyView.type = propertyDesc.type;
 
-        var propertyDesc = definition.properties[property];
         var propertyItems: Swagger.Schema = propertyDesc.items;
         
         if (propertyDesc.enum) {
