@@ -41,8 +41,10 @@
     <TypeScriptCompile Include="app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <TypeScriptCompile Include="modules\modelGenerator.ts" />
-    <TypeScriptCompile Include="modules\modelsRender.ts" />
+    <TypeScriptCompile Include="modules\enumRenderer\enumRenderer.ts" />
+    <TypeScriptCompile Include="modules\enumRenderer\enumViewGenerator.ts" />
+    <TypeScriptCompile Include="modules\modelsRenderer\modelViewGenerator.ts" />
+    <TypeScriptCompile Include="modules\modelsRenderer\modelsRenderer.ts" />
     <TypeScriptCompile Include="Scripts\typings\swagger\swagger.d.ts" />
     <TypeScriptCompile Include="typings\mustache\mustache.d.ts" />
     <TypeScriptCompile Include="typings\node\node.d.ts" />
@@ -50,6 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="modules\" />
+    <Folder Include="modules\modelsRenderer\" />
+    <Folder Include="modules\enumRenderer\" />
+    <Folder Include="modules\servicesRenderer\" />
     <Folder Include="swagger\" />
     <Folder Include="Scripts\" />
     <Folder Include="Scripts\typings\" />

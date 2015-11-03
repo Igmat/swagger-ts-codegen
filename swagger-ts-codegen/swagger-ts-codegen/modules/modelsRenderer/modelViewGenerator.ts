@@ -1,9 +1,9 @@
-﻿/// <reference path="../app.ts" />
+﻿import enumRenderer = require("./../enumRenderer/enumRenderer");
 
-export class ModelViewModel {
+export class ModelView {
     public name: string;
-    public properties: PropertyViewModel[];
-    public enums: EnumViewModel[];
+    public properties: PropertyView[];
+    public enums: enumRenderer.Generator.EnumView[];
 
     constructor() {
         this.properties = [];
@@ -11,7 +11,7 @@ export class ModelViewModel {
     }
 }
 
-export class PropertyViewModel {
+export class PropertyView {
     public name: string;
     public description: string;
     public type: string;
@@ -19,28 +19,13 @@ export class PropertyViewModel {
     constructor() { }
 }
 
-export class EnumViewModel {
-    public name: string;
-    public entities: EnumEntity[];
+export function GenerateModelView(name: string, definition: Swagger.Schema): ModelView {
 
-    constructor() {
-        this.entities = [];
-    }
-}
-
-export class EnumEntity {
-    public name: string;
-
-    constructor() { }
-}
-
-export function generateModel(name: string, definition: Swagger.Schema): ModelViewModel {
-
-    var modelView: ModelViewModel = new ModelViewModel();
+    var modelView: ModelView = new ModelView();
     modelView.name = name;
 
     for (var property in definition.properties) {
-        var propertyView: PropertyViewModel = new PropertyViewModel();
+        var propertyView: PropertyView = new PropertyView();
         propertyView.name = property;
         var propertyDesc = definition.properties[property];
         propertyView.type = propertyDesc.type;
@@ -48,14 +33,8 @@ export function generateModel(name: string, definition: Swagger.Schema): ModelVi
         var propertyItems: Swagger.Schema = propertyDesc.items;
         
         if (propertyDesc.enum) {
-            var enumView: EnumViewModel = new EnumViewModel();
-            enumView.name = property + "Enum";
+            var enumView = enumRenderer.Generator.GenerateEnumView(property + "Enum", propertyDesc.enum);
 
-            for (var en in propertyDesc.enum) {
-                var enumEntity: EnumEntity = new EnumEntity();
-                enumEntity.name = propertyDesc.enum[en].toString();
-                enumView.entities.push(enumEntity);
-            }
             propertyView.type = enumView.name;
             modelView.enums.push(enumView);
         }
@@ -70,14 +49,8 @@ export function generateModel(name: string, definition: Swagger.Schema): ModelVi
                 arrayType = propertyItems.type;
             }
             if (propertyItems.enum) {
-                var enumView: EnumViewModel = new EnumViewModel();
-                enumView.name = property + "Enum";
+                var enumView = enumRenderer.Generator.GenerateEnumView(property + "Enum", propertyItems.enum);
 
-                for (var en in propertyItems.enum) {
-                    var enumEntity: EnumEntity = new EnumEntity();
-                    enumEntity.name = propertyItems.enum[en].toString();
-                    enumView.entities.push(enumEntity);
-                }
                 arrayType = enumView.name;
                 modelView.enums.push(enumView);
             }
