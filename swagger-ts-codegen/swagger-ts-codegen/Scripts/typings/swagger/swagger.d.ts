@@ -74,7 +74,43 @@
         QueryParameter |
         PathParameter |
         HeaderParameter;
+    // ----------------------- Operation Parameter--------------------------------
+    // possibly will be better than original parameters
+    export enum ParameterLocation {
+        query,
+        header,
+        path,
+        formData,
+        body
+    }
 
+    export interface OperationParameter {
+        name: string;
+        in: ParameterLocation;
+        required?: boolean;
+        description?: string;
+
+        schema?: Schema;
+
+        type?: string;
+        format?: string;
+        allowEmptyValue?: boolean;
+        items?: Schema |[Schema];
+        collectionFormat?: string;
+        default?: string | boolean | number | Object;
+        multipleOf?: number;
+        maximum?: number;
+        exclusiveMaximum?: number;
+        minimum?: number;
+        exclusiveMinimum?: number;
+        maxLength?: number;
+        minLength?: number;
+        pattern?: string;
+        maxItems?: number;
+        minItems?: number;
+        uniqueItems?: boolean;
+        enum?: [string | boolean | number | Object];
+    }
     // ------------------------------- Path --------------------------------------
     export interface Path {
         $ref?: string;
@@ -91,13 +127,14 @@
     // ----------------------------- Operation -----------------------------------
     export interface Operation {
         responses: { [responseName: string]: Response };
+        tags?: [string];//this field was missing in original d.ts
         summary?: string;
         description?: string;
         externalDocs?: ExternalDocs;
         operationId?: string;
         produces?: [string];
         consumes?: [string];
-        parameters?: [Parameter];
+        parameters?: [OperationParameter];
         schemes?: [string];
         deprecated?: boolean;
         security?: [Secuirty]
