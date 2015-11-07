@@ -1,6 +1,6 @@
 export class {{name}}Service{
     private basePath = 'http://localhost/';
-    
+
     static $inject: string[] = ['$http', '$httpParamSerializer'];
 
     constructor(private $http: ng.IHttpService, basePath?: string, private $httpParamSerializer?: (d: any) => any) {
@@ -8,14 +8,21 @@ export class {{name}}Service{
                 this.basePath = basePath;
             }
         }
-    {{#methods}}
-    public {{operationId}}(
-            {{#parameters}}
-                {{name}}: {{type}}
-            {{/parameters}}
-        ){
+{{#methods}}
+    public {{operationId}}({{#parameters}} {{name}}: {{type}}, {{/parameters}} extraHttpRequestParams?: any) {{responses}} ) {
        // {{description}}
         let path = this.basePath + '{{link}}';
+
+
+
+
+          if (extraHttpRequestParams) {
+                        for (let k in extraHttpRequestParams) {
+                            if (extraHttpRequestParams.hasOwnProperty(k)) {
+                                httpRequestParams[k] = extraHttpRequestParams[k];
+                            }
+                        }
+                    }
 }
-    {{/methods}}
+{{/methods}}
 }

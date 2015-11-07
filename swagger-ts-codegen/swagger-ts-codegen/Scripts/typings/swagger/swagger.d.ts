@@ -76,17 +76,10 @@
         HeaderParameter;
     // ----------------------- Operation Parameter--------------------------------
     // possibly will be better than original parameters
-    export enum ParameterLocation {
-        query,
-        header,
-        path,
-        formData,
-        body
-    }
 
     export interface OperationParameter {
         name: string;
-        in: ParameterLocation;
+        in: string;
         required?: boolean;
         description?: string;
 

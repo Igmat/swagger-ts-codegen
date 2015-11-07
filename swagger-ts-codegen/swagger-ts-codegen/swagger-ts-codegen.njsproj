@@ -47,6 +47,7 @@
     <TypeScriptCompile Include="modules\modelsRenderer\modelViewGenerator.ts" />
     <TypeScriptCompile Include="modules\servicesRenderer\servicesRenderer.ts" />
     <TypeScriptCompile Include="modules\servicesRenderer\servicesViewGenerator.ts" />
+    <TypeScriptCompile Include="modules\servicesRenderer\TypeScript1.ts" />
     <TypeScriptCompile Include="Scripts\typings\swagger\swagger.d.ts" />
     <TypeScriptCompile Include="typings\mustache\mustache.d.ts" />
     <TypeScriptCompile Include="typings\node\node.d.ts" />
