@@ -1,14 +1,18 @@
 ﻿import Mustache = require('mustache');
+import enumRenderer = require("./../enumRenderer/enumRenderer");
 
 export import Generator = require("./servicesViewGenerator");
 
-export function RenderServices(paths: { [pathName: string]: Swagger.Path }, serviceTemplate: string): string[] {
+export function RenderServices(paths: { [pathName: string]: Swagger.Path }, serviceTemplate: string, enumTemplate: string): string[] {
     var services: string[] = [];
     var ServiceView = Generator.GenerateServiceViews(paths);
 
     for (var name in ServiceView) {
-
-        services.push(Mustache.render(serviceTemplate, ServiceView[name]))
+        var result = Mustache.render(serviceTemplate, ServiceView[name]);
+        ServiceView[name].enums.forEach((value: enumRenderer.Generator.EnumView) => {
+            result += enumRenderer.RenderEnumFromView(value, enumTemplate);
+        });
+        services.push(result)
     }
     return services;
 }

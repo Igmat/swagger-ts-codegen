@@ -1,28 +1,59 @@
 export class {{name}}Service{
-    private basePath = 'http://localhost/';
+    private basePath: string = 'http://localhost/';
+    public defaultHeaders: any = {};
 
     static $inject: string[] = ['$http', '$httpParamSerializer'];
 
-    constructor(private $http: ng.IHttpService, basePath?: string, private $httpParamSerializer?: (d: any) => any) {
-            if (basePath) {
-                this.basePath = basePath;
+    constructor(private $http: angular.IHttpService, private $httpParamSerializer?: (d: any) => any, basePath?: string) {
+        if (basePath) {
+            this.basePath = basePath;
+        }
+    }
+
+    private extendObj<T1,T2>(objA: T1, objB: T2) {
+        for(let key in objB){
+            if(objB.hasOwnProperty(key)){
+                objA[key] = objB[key];
             }
         }
-{{#methods}}
-    public {{operationId}}({{#parameters}} {{name}}: {{type}}, {{/parameters}} extraHttpRequestParams?: any) {{responses}} ) {
-       // {{description}}
-        let path = this.basePath + '{{link}}';
+        return <T1&T2>objA;
+    }
 
+    {{#methods}}
 
+    //{{description}}
+    public {{operationId}}({{#pathParameters}}
+        {{name}}: {{type}}, {{/pathParameters}}{{#queryParameters}}
+        {{name}}{{#optional}}?{{/optional}}: {{type}}, {{/queryParameters}}{{#bodyParameter}}
+        {{name}}{{#optional}}?{{/optional}}: {{type}}, {{/bodyParameter}}
+        extraHttpRequestParams?: any): angular.IHttpPromise<{{response}}> {
 
+        const path = this.basePath + '{{{link}}}'{{#pathParameters}}
+            .replace('{' + '{{name}}' + '}', {{name}}){{/pathParameters}};{{#pathParameters}}
+        if (!{{name}}) {
+            throw new Error('Missing required parameter {{name}} when calling {{operationId}}');
+        }{{/pathParameters}}
 
-          if (extraHttpRequestParams) {
-                        for (let k in extraHttpRequestParams) {
-                            if (extraHttpRequestParams.hasOwnProperty(k)) {
-                                httpRequestParams[k] = extraHttpRequestParams[k];
-                            }
-                        }
-                    }
-}
-{{/methods}}
+        let queryParameters: any = {};{{#queryParameters}}
+        if ({{name}} !== undefined) {
+            queryParameters['{{name}}'] = {{name}};
+        }{{/queryParameters}}
+
+        let headerParams: any = this.extendObj({}, this.defaultHeaders);
+
+        let httpRequestParams: angular.IRequestConfig = {
+            method: '{{httpVerb}}',
+            url: path,{{#bodyParameter}}
+            data: {{name}},{{/bodyParameter}}
+            params: queryParameters,
+            headers: headerParams
+        };
+
+        if (extraHttpRequestParams) {
+            httpRequestParams = this.extendObj(httpRequestParams, extraHttpRequestParams);
+        }
+
+        return this.$http(httpRequestParams);
+    }
+    {{/methods}}
 }

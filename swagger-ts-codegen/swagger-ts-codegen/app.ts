@@ -22,7 +22,7 @@ models.forEach((value: string): void => {
     console.log(value);
 });*/
 
-var services = ServicesRenderer.RenderServices(swagger.paths, serviceTemplate);
+var services = ServicesRenderer.RenderServices(swagger.paths, serviceTemplate, enumTemplate);
 services.forEach((value: string): void => {
     console.log(value);
 })
