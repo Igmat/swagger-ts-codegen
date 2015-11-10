@@ -6,7 +6,7 @@ export interface {{name}}{
         /**
         * {{{description}}}
         */
-        {{name}}:{{type}};
+        {{name}}:{{type}}{{#isArray}}[]{{/isArray}};
     {{/properties}}
     }
 }

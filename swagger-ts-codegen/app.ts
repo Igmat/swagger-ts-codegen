@@ -1,6 +1,7 @@
 ﻿/// <reference path="Scripts/typings/swagger/swagger.d.ts" />
 /// <reference path="typings/tsd.d.ts" />
 
+import EnumRenderer = require("./modules/enumRenderer/enumRenderer");
 import ModelsRenderer = require("./modules/modelsRenderer/modelsRenderer");
 import ServicesRenderer = require("./modules/servicesRenderer/servicesRenderer");
 
@@ -16,15 +17,20 @@ var enumTemplate: string = fs.readFileSync(enumTemplatePath, 'UTF-8');
 var serviceTemplate: string = fs.readFileSync(serviceTemplatePath, 'UTF-8');
 
 var swagger: Swagger.Spec = JSON.parse(swaggerFile);
-/*
-var models = ModelsRenderer.RenderModels(swagger.definitions, modelTemplate, enumTemplate);
-models.forEach((value: string): void => {
-    console.log(value);
-});*/
+var enumGenerator = new EnumRenderer.Generator.EnumGenerator();
 
-var services = ServicesRenderer.RenderServices(swagger.paths, serviceTemplate, enumTemplate);
-services.forEach((value: string): void => {
-    console.log(value);
-})
+//var models = ModelsRenderer.RenderModels(swagger.definitions, modelTemplate, enumTemplate, enumGenerator);
+//models.forEach((value: string): void => {
+//    console.log(value);
+//});
+
+//var services = ServicesRenderer.RenderServices(swagger.paths, serviceTemplate, enumTemplate);
+//services.forEach((value: string): void => {
+//    console.log(value);
+//})
+
+var services = ServicesRenderer.Generator.GenerateServiceViews(swagger.paths, enumGenerator);
+var models = ModelsRenderer.Generator.GenerateModelViewCollection(swagger.definitions, enumGenerator);
+var components = ServicesRenderer.Generator.GenerateComponents(models, services, enumGenerator);
 
 console.log(" ");
