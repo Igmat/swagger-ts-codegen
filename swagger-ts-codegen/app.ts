@@ -1,9 +1,11 @@
 ﻿/// <reference path="Scripts/typings/swagger/swagger.d.ts" />
 /// <reference path="typings/tsd.d.ts" />
 
-import EnumRenderer = require("./modules/enumRenderer/enumRenderer");
-import ModelsRenderer = require("./modules/modelsRenderer/modelsRenderer");
-import ServicesRenderer = require("./modules/servicesRenderer/servicesRenderer");
+//import EnumRenderer = require("./modules/enumRenderer/enumRenderer");
+//import ModelsRenderer = require("./modules/modelsRenderer/modelsRenderer");
+//import ServicesRenderer = require("./modules/servicesRenderer/servicesRenderer");
+import Generators = require("./modules/generators");
+import Renderers = require("./modules/renderers");
 
 var fs = require('fs');
 
@@ -17,7 +19,11 @@ var enumTemplate: string = fs.readFileSync(enumTemplatePath, 'UTF-8');
 var serviceTemplate: string = fs.readFileSync(serviceTemplatePath, 'UTF-8');
 
 var swagger: Swagger.Spec = JSON.parse(swaggerFile);
-var enumGenerator = new EnumRenderer.Generator.EnumGenerator();
+var serviceGenerator = new Generators.Services.ServiceGenerator();
+var componentRenderer = new Renderers.Components.ComponentRenderer(enumTemplate, modelTemplate, serviceTemplate);
+var components = serviceGenerator.GenerateComponents(swagger);
+var renderedComponents = componentRenderer.RenderComponents(components);
+//var enumGenerator = new EnumRenderer.Generator.EnumGenerator();
 
 //var models = ModelsRenderer.RenderModels(swagger.definitions, modelTemplate, enumTemplate, enumGenerator);
 //models.forEach((value: string): void => {
@@ -29,8 +35,8 @@ var enumGenerator = new EnumRenderer.Generator.EnumGenerator();
 //    console.log(value);
 //})
 
-var services = ServicesRenderer.Generator.GenerateServiceViews(swagger.paths, enumGenerator);
-var models = ModelsRenderer.Generator.GenerateModelViewCollection(swagger.definitions, enumGenerator);
-var components = ServicesRenderer.Generator.GenerateComponents(models, services, enumGenerator);
+//var services = ServicesRenderer.Generator.GenerateServiceViews(swagger.paths, enumGenerator);
+//var models = ModelsRenderer.Generator.GenerateModelViewCollection(swagger.definitions, enumGenerator);
+//var components = ServicesRenderer.Generator.GenerateComponents(models, services, enumGenerator);
 
 console.log(" ");

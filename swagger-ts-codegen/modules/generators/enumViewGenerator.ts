@@ -20,14 +20,20 @@
     }
 }
 
+export class EnumViewCollection {
+    [enumName: string]: EnumView;
+    constructor() {
+    }
+}
+
 export class EnumGenerator {
-    public enums: { [enumName: string]: EnumView };
+    public enums: EnumViewCollection;
 
     constructor() {
-        this.enums = {};
+        this.enums = new EnumViewCollection();
     }
 
-    public GenerateEnumView(name: string, content: [string | boolean | number | Object], optionalPrefix: string): EnumView {
+    public GenerateEnum(name: string, content: [string | boolean | number | Object], optionalPrefix: string): EnumView {
         var enumView: EnumView = new EnumView();
         enumView.name = name + "Enum";
 
