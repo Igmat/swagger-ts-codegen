@@ -7,22 +7,27 @@
 import Generators = require("./modules/generators");
 import Renderers = require("./modules/renderers");
 
-var fs = require('fs');
+var fs = require('fs'); 
 
-var filePath: string = 'swagger/swagger.json';
+//var filePath: string = 'swagger/swagger.json';
 var modelTemplatePath: string = 'templates/model.mustache';
 var enumTemplatePath: string = 'templates/enum.mustache';
 var serviceTemplatePath: string = 'templates/service.mustache';
-var swaggerFile: string = fs.readFileSync(filePath, 'UTF-8');
+//var swaggerFile: string = fs.readFileSync(filePath, 'UTF-8');
 var modelTemplate: string = fs.readFileSync(modelTemplatePath, 'UTF-8');
 var enumTemplate: string = fs.readFileSync(enumTemplatePath, 'UTF-8');
 var serviceTemplate: string = fs.readFileSync(serviceTemplatePath, 'UTF-8');
 
-var swagger: Swagger.Spec = JSON.parse(swaggerFile);
+//var swagger: Swagger.Spec = JSON.parse(swaggerFile);
 var serviceGenerator = new Generators.Services.ServiceGenerator();
 var componentRenderer = new Renderers.Components.ComponentRenderer(enumTemplate, modelTemplate, serviceTemplate);
-var components = serviceGenerator.GenerateComponents(swagger);
-var renderedComponents = componentRenderer.RenderComponents(components);
+//var components = serviceGenerator.GenerateComponents(swagger);
+//var renderedComponents = componentRenderer.RenderComponents(components);
+var swaggerCodegen = {
+    serviceGenerator: serviceGenerator,
+    componentRenderer: componentRenderer
+}
+export = swaggerCodegen;
 //var enumGenerator = new EnumRenderer.Generator.EnumGenerator();
 
 //var models = ModelsRenderer.RenderModels(swagger.definitions, modelTemplate, enumTemplate, enumGenerator);
