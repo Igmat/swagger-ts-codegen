@@ -1,85 +1,87 @@
-﻿import Enums = require("./enumViewGenerator");
+﻿
+module SwaggerCodeGen.Generators.Models {
 
-export class ModelView {
-    public name: string;
-    public properties: PropertyView[];
-    public enums: Enums.EnumViewCollection;
+    export class ModelView {
+        public name: string;
+        public properties: PropertyView[];
+        public enums: Enums.EnumViewCollection;
 
-    constructor() {
-        this.properties = [];
-        this.enums = new Enums.EnumViewCollection;
-    }
-}
-
-export class ModelViewCollection {
-    [ModelName: string]: ModelView;
-    constructor() {
-    }
-}
-
-export class PropertyView {
-    public name: string;
-    public description: string;
-    public type: string;
-    public isArray: boolean;
-
-    constructor() {
-        this.isArray = false;
-    }
-}
-
-export class ModelGenerator {
-    constructor(private enumGenerator: Enums.EnumGenerator = new Enums.EnumGenerator) {
+        constructor() {
+            this.properties = [];
+            this.enums = new Enums.EnumViewCollection;
+        }
     }
 
-    public GenerateModel(name: string, definition: Swagger.Schema): ModelView {
+    export class ModelViewCollection {
+        [ModelName: string]: ModelView;
+        constructor() {
+        }
+    }
 
-        var modelView: ModelView = new ModelView();
-        modelView.name = name;
+    export class PropertyView {
+        public name: string;
+        public description: string;
+        public type: string;
+        public isArray: boolean;
 
-        for (var property in definition.properties) {
-            var propertyView: PropertyView = new PropertyView();
-            propertyView.name = property;
-            var propertyDesc = definition.properties[property];
-            propertyView.type = propertyDesc.type;
+        constructor() {
+            this.isArray = false;
+        }
+    }
 
-            var propertyItems: Swagger.Schema = propertyDesc.items;
+    export class ModelGenerator {
+        constructor(private enumGenerator: Enums.EnumGenerator = new Enums.EnumGenerator) {
+        }
 
-            if (propertyDesc.enum) {
-                var enumView = this.enumGenerator.GenerateEnum(property, propertyDesc.enum, modelView.name);
+        public GenerateModel(name: string, definition: Swagger.Schema): ModelView {
 
-                propertyView.type = enumView.name;
-                modelView.enums[enumView.name] = enumView;
-            }
+            var modelView: ModelView = new ModelView();
+            modelView.name = name;
 
-            if (propertyView.type === "array") {
+            for (var property in definition.properties) {
+                var propertyView: PropertyView = new PropertyView();
+                propertyView.name = property;
+                var propertyDesc = definition.properties[property];
+                propertyView.type = propertyDesc.type;
+
                 var propertyItems: Swagger.Schema = propertyDesc.items;
-                propertyView.isArray = true;
-                if (propertyItems.$ref) {
-                    propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
-                }
-                if (propertyItems.type) {
-                    propertyView.type = propertyItems.type;
-                }
-                if (propertyItems.enum) {
-                    var enumView = this.enumGenerator.GenerateEnum(property, propertyItems.enum, modelView.name);
+
+                if (propertyDesc.enum) {
+                    var enumView = this.enumGenerator.GenerateEnum(property, propertyDesc.enum, modelView.name);
 
                     propertyView.type = enumView.name;
                     modelView.enums[enumView.name] = enumView;
                 }
+
+                if (propertyView.type === "array") {
+                    var propertyItems: Swagger.Schema = propertyDesc.items;
+                    propertyView.isArray = true;
+                    if (propertyItems.$ref) {
+                        propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
+                    }
+                    if (propertyItems.type) {
+                        propertyView.type = propertyItems.type;
+                    }
+                    if (propertyItems.enum) {
+                        var enumView = this.enumGenerator.GenerateEnum(property, propertyItems.enum, modelView.name);
+
+                        propertyView.type = enumView.name;
+                        modelView.enums[enumView.name] = enumView;
+                    }
+                }
+                propertyView.description = propertyDesc.description;
+                modelView.properties.push(propertyView);
             }
-            propertyView.description = propertyDesc.description;
-            modelView.properties.push(propertyView);
+
+            return modelView;
         }
 
-        return modelView;
-    }
-
-    public GenerateModelCollection(definitions: { [definitionsName: string]: Swagger.Schema } ): ModelViewCollection {
-        var result = new ModelViewCollection();
-        for (var modelName in definitions) {
-            result[modelName] = this.GenerateModel(modelName, definitions[modelName]);
+        public GenerateModelCollection(definitions: { [definitionsName: string]: Swagger.Schema }): ModelViewCollection {
+            var result = new ModelViewCollection();
+            for (var modelName in definitions) {
+                result[modelName] = this.GenerateModel(modelName, definitions[modelName]);
+            }
+            return result;
         }
-        return result;
     }
 }

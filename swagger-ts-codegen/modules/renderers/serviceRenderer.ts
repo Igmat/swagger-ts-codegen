@@ -1,6 +1,7 @@
-﻿import Mustache = require('mustache');
-import Enums = require("./enumRenderer");
-import Generators = require("./../generators");
+﻿
+module SwaggerCodeGen.Renderers.Services { 
+    var Mustache: MustacheStatic = require('mustache');
+
 
 export class RenderedService {
     public name: string;
@@ -53,4 +54,5 @@ export class ServiceRenderer {
         }
         return result;
     }
+}
 }
