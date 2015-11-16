@@ -1,8 +1,8 @@
 {
   "name": "swagger-ts-codegen",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "swagger-ts-codegen",
-  "main": "app.js",
+  "main": "dist/app.js",
   "author": {
     "name": "Игорь",
     "email": ""

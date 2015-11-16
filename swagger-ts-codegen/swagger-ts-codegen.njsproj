@@ -43,11 +43,9 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <TypeScriptCompile Include="dist\app.d.ts" />
-    <TypeScriptCompile Include="modules\generators.ts" />
     <TypeScriptCompile Include="modules\generators\enumViewGenerator.ts" />
     <TypeScriptCompile Include="modules\generators\modelViewGenerator.ts" />
     <TypeScriptCompile Include="modules\generators\serviceViewGenerator.ts" />
-    <TypeScriptCompile Include="modules\renderers.ts" />
     <TypeScriptCompile Include="modules\renderers\componentRenderer.ts" />
     <TypeScriptCompile Include="modules\renderers\enumRenderer.ts" />
     <TypeScriptCompile Include="modules\renderers\modelRenderer.ts" />

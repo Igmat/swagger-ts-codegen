@@ -3,9 +3,9 @@
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var fs = require('fs');
-    var modelTemplatePath = 'templates/model.mustache';
-    var enumTemplatePath = 'templates/enum.mustache';
-    var serviceTemplatePath = 'templates/service.mustache';
+    var modelTemplatePath = __dirname + '/../templates/model.mustache';
+    var enumTemplatePath = __dirname + '/../templates/enum.mustache';
+    var serviceTemplatePath = __dirname + '/../templates/service.mustache';
     SwaggerCodeGen.modelTemplate = fs.readFileSync(modelTemplatePath, 'UTF-8');
     SwaggerCodeGen.enumTemplate = fs.readFileSync(enumTemplatePath, 'UTF-8');
     SwaggerCodeGen.serviceTemplate = fs.readFileSync(serviceTemplatePath, 'UTF-8');
@@ -660,4 +660,3 @@ var SwaggerCodeGen;
         })(Services = Renderers.Services || (Renderers.Services = {}));
     })(Renderers = SwaggerCodeGen.Renderers || (SwaggerCodeGen.Renderers = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-module.exports = SwaggerCodeGen;
