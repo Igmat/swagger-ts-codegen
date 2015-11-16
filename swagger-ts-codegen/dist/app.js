@@ -660,3 +660,4 @@ var SwaggerCodeGen;
         })(Services = Renderers.Services || (Renderers.Services = {}));
     })(Renderers = SwaggerCodeGen.Renderers || (SwaggerCodeGen.Renderers = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
+module.exports = SwaggerCodeGen;

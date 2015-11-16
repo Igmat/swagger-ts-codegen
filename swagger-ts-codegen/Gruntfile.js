@@ -19,7 +19,7 @@
                 src: ['dist/app.ts'],
                 dest: 'dist',
                 options: {
-                    module: 'amd', //or commonjs
+                    module: 'commonjs', //or amd
                     target: 'es5', //or es3
                     sourcemap: true,
                     declaration: true,

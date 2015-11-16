@@ -5,6 +5,7 @@ declare module SwaggerCodeGen {
     var enumTemplate: string;
     var serviceTemplate: string;
 }
+export = SwaggerCodeGen;
 declare module SwaggerCodeGen.Generators.Enums {
     class EnumView {
         name: string;

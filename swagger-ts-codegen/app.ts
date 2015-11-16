@@ -40,3 +40,5 @@ module SwaggerCodeGen {
     //var components = ServicesRenderer.Generator.GenerateComponents(models, services, enumGenerator);
 
 }
+
+export = SwaggerCodeGen;
