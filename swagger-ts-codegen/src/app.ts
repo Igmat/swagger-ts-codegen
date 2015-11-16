@@ -12,6 +12,4 @@ module SwaggerCodeGen {
     export var enumTemplate: string = fs.readFileSync(enumTemplatePath, 'UTF-8');
     export var serviceTemplate: string = fs.readFileSync(serviceTemplatePath, 'UTF-8');
 }
-declare module 'swagger-ts-codegen' {
-    export = SwaggerCodeGen;
-}
+export = SwaggerCodeGen;

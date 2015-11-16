@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>70cf7b7a-0f19-42ef-be04-844dff93a2a4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.ts</StartupFile>
+    <StartupFile>src\app.ts</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -39,10 +39,11 @@
     <Content Include="templates\model.mustache" />
     <Content Include="templates\service.mustache" />
     <Content Include="tsd.json" />
-    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="src\app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <TypeScriptCompile Include="dist\app.d.ts" />
+    <TypeScriptCompile Include="dist\swagger-ts-codegen.d.ts" />
     <TypeScriptCompile Include="modules\generators\enumViewGenerator.ts" />
     <TypeScriptCompile Include="modules\generators\modelViewGenerator.ts" />
     <TypeScriptCompile Include="modules\generators\serviceViewGenerator.ts" />
@@ -57,8 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
-    <Folder Include="modules\" />
-    <Folder Include="modules\generators\" />
+    <Folder Include="src\" />
+    <Folder Include="src\generators\" />
     <Folder Include="modules\renderers\" />
     <Folder Include="swagger\" />
     <Folder Include="Scripts\" />

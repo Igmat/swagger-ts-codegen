@@ -33,7 +33,7 @@
                 separator: ';',
             },
             dist: {
-                src: ['app.ts', 'modules/**/*.ts'],
+                src: ['src/*.ts', 'src/**/*.ts'],
                 dest: 'dist/app.ts',
             },
         }
