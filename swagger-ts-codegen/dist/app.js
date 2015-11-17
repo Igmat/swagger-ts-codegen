@@ -10,7 +10,6 @@ var SwaggerCodeGen;
     SwaggerCodeGen.enumTemplate = fs.readFileSync(enumTemplatePath, 'UTF-8');
     SwaggerCodeGen.serviceTemplate = fs.readFileSync(serviceTemplatePath, 'UTF-8');
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Generators;
@@ -85,7 +84,6 @@ var SwaggerCodeGen;
         })(Enums = Generators.Enums || (Generators.Enums = {}));
     })(Generators = SwaggerCodeGen.Generators || (SwaggerCodeGen.Generators = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Generators;
@@ -165,7 +163,6 @@ var SwaggerCodeGen;
         })(Models = Generators.Models || (Generators.Models = {}));
     })(Generators = SwaggerCodeGen.Generators || (SwaggerCodeGen.Generators = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Generators;
@@ -431,7 +428,6 @@ var SwaggerCodeGen;
         })(Services = Generators.Services || (Generators.Services = {}));
     })(Generators = SwaggerCodeGen.Generators || (SwaggerCodeGen.Generators = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Renderers;
@@ -488,7 +484,6 @@ var SwaggerCodeGen;
         })(Component = Renderers.Component || (Renderers.Component = {}));
     })(Renderers = SwaggerCodeGen.Renderers || (SwaggerCodeGen.Renderers = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Renderers;
@@ -548,7 +543,6 @@ var SwaggerCodeGen;
         })(Enums = Renderers.Enums || (Renderers.Enums = {}));
     })(Renderers = SwaggerCodeGen.Renderers || (SwaggerCodeGen.Renderers = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Renderers;
@@ -604,7 +598,6 @@ var SwaggerCodeGen;
         })(Models = Renderers.Models || (Renderers.Models = {}));
     })(Renderers = SwaggerCodeGen.Renderers || (SwaggerCodeGen.Renderers = {}));
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
-;
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
     var Renderers;

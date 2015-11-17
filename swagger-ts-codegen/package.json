@@ -1,6 +1,6 @@
 {
   "name": "swagger-ts-codegen",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "swagger-ts-codegen",
   "main": "dist/app.js",
   "author": {
@@ -27,14 +27,17 @@
   ],
   "dependencies": {
     "final-fs": "^1.6.1",
-    "grunt": "0.4.5",
-    "grunt-contrib-concat": "0.5.1",
-    "mustache": "^2.2.0",
-    "grunt-typescript": "0.8.0",
-    "grunt-contrib-clean": "0.7.0"
+    "mustache": "^2.2.0"
+  },
+  "typescript": {
+    "definition": "dist/swagger-ts-codegen.d.ts"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-contrib-concat": "0.5.1",
+    "grunt-typescript": "0.8.0",
+    "grunt-contrib-clean": "0.7.0",
+    "dts-generator": "1.6.2",
     "tsd": "^0.6.5"
   }
 }
