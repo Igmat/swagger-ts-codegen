@@ -5,9 +5,11 @@ module SwaggerCodeGen.Generators.Models {
         public name: string;
         public properties: PropertyView[];
         public enums: Enums.EnumViewCollection;
+        public linkedModels: string[];
 
         constructor() {
             this.properties = [];
+            this.linkedModels = [];
             this.enums = new Enums.EnumViewCollection;
         }
     }
@@ -43,6 +45,10 @@ module SwaggerCodeGen.Generators.Models {
                 propertyView.name = property;
                 var propertyDesc = definition.properties[property];
                 propertyView.type = propertyDesc.type;
+                if (propertyDesc.$ref) {
+                    propertyView.type = propertyDesc.$ref.slice("#/definitions/".length);
+                    modelView.linkedModels.push(propertyView.type);
+                }
 
                 var propertyItems: Swagger.Schema = propertyDesc.items;
 
@@ -58,6 +64,7 @@ module SwaggerCodeGen.Generators.Models {
                     propertyView.isArray = true;
                     if (propertyItems.$ref) {
                         propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
+                        modelView.linkedModels.push(propertyView.type);
                     }
                     if (propertyItems.type) {
                         propertyView.type = propertyItems.type;

@@ -58,6 +58,8 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         enums: Enums.EnumViewCollection;
 
+        linkedModels: string[];
+
         constructor();
 
     }
@@ -109,6 +111,8 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
         type: string;
 
         optional: boolean;
+
+        description: string;
 
         constructor();
 

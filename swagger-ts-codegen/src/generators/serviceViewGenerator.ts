@@ -5,6 +5,7 @@ module SwaggerCodeGen.Generators.Services {
         public name: string;
         public type: string;
         public optional: boolean;
+        public description: string;
 
         constructor() {
 
@@ -81,6 +82,7 @@ module SwaggerCodeGen.Generators.Services {
                 let component = new Component();
                 component.name = service.name;
                 component.service = service;
+                let modelCount = 0;
                 for (let enumName in service.enums) {
                     component.enums[enumName] = service.enums[enumName];
                 }
@@ -95,6 +97,7 @@ module SwaggerCodeGen.Generators.Services {
                         if (!model && !singleEnum) throw new Error("There is no Enum or Model with name" + method.response);
                         if (model) {
                             component.models[model.name] = model;
+                            modelCount++;
                             for (let enumName in model.enums) {
                                 component.enums[enumName] = model.enums[enumName];
                             }
@@ -114,6 +117,7 @@ module SwaggerCodeGen.Generators.Services {
                             let singleEnum = this.enumGenerator.enums[parameter.type];
                             if (!model && !singleEnum) throw new Error("There is no Enum or Model with name" + parameter.type);
                             if (model) {
+                                modelCount++;
                                 component.models[model.name] = model;
                                 for (let enumName in model.enums) {
                                     component.enums[enumName] = model.enums[enumName];
@@ -135,6 +139,7 @@ module SwaggerCodeGen.Generators.Services {
                             let singleEnum = this.enumGenerator.enums[parameter.type];
                             if (!model && !singleEnum) throw new Error("There is no Enum or Model with name" + parameter.type);
                             if (model) {
+                                modelCount++;
                                 component.models[model.name] = model;
                                 for (let enumName in model.enums) {
                                     component.enums[enumName] = model.enums[enumName];
@@ -145,6 +150,23 @@ module SwaggerCodeGen.Generators.Services {
                             }
                         }
                     }
+                }
+
+                //Code for recursive check of links from one model to another
+                let isNewLinkedModelExists = true;
+                while (isNewLinkedModelExists) {
+                    let modelAndLinkedModelCount = modelCount;
+                    for (let modelName in component.models) {
+                        let model = component.models[modelName];
+                        for (let i = 0; i < model.linkedModels.length; i++) {
+                            let linkedModelName = model.linkedModels[i];
+                            if (!component.models[linkedModelName]) {
+                                modelAndLinkedModelCount++;
+                                component.models[linkedModelName] = models[linkedModelName];
+                            }
+                        }
+                    }
+                    isNewLinkedModelExists = modelAndLinkedModelCount > modelCount;
                 }
 
                 result.push(component);
@@ -194,6 +216,9 @@ module SwaggerCodeGen.Generators.Services {
                     var parameter = operation.parameters[i];
                     var parameterView = new ParameterView();
                     parameterView.name = parameter.name;
+                    if (parameter.description) {
+                        parameterView.description = parameter.description;
+                    }
 
                     switch (parameter.in) {
 

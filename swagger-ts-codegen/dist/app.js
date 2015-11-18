@@ -93,6 +93,7 @@ var SwaggerCodeGen;
             var ModelView = (function () {
                 function ModelView() {
                     this.properties = [];
+                    this.linkedModels = [];
                     this.enums = new Generators.Enums.EnumViewCollection;
                 }
                 return ModelView;
@@ -124,6 +125,10 @@ var SwaggerCodeGen;
                         propertyView.name = property;
                         var propertyDesc = definition.properties[property];
                         propertyView.type = propertyDesc.type;
+                        if (propertyDesc.$ref) {
+                            propertyView.type = propertyDesc.$ref.slice("#/definitions/".length);
+                            modelView.linkedModels.push(propertyView.type);
+                        }
                         var propertyItems = propertyDesc.items;
                         if (propertyDesc.enum) {
                             var enumView = this.enumGenerator.GenerateEnum(property, propertyDesc.enum, modelView.name);
@@ -135,6 +140,7 @@ var SwaggerCodeGen;
                             propertyView.isArray = true;
                             if (propertyItems.$ref) {
                                 propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
+                                modelView.linkedModels.push(propertyView.type);
                             }
                             if (propertyItems.type) {
                                 propertyView.type = propertyItems.type;
@@ -227,6 +233,7 @@ var SwaggerCodeGen;
                         var component = new Component();
                         component.name = service.name;
                         component.service = service;
+                        var modelCount = 0;
                         for (var enumName in service.enums) {
                             component.enums[enumName] = service.enums[enumName];
                         }
@@ -242,6 +249,7 @@ var SwaggerCodeGen;
                                     throw new Error("There is no Enum or Model with name" + method.response);
                                 if (model) {
                                     component.models[model.name] = model;
+                                    modelCount++;
                                     for (var enumName in model.enums) {
                                         component.enums[enumName] = model.enums[enumName];
                                     }
@@ -261,6 +269,7 @@ var SwaggerCodeGen;
                                     if (!model && !singleEnum)
                                         throw new Error("There is no Enum or Model with name" + parameter.type);
                                     if (model) {
+                                        modelCount++;
                                         component.models[model.name] = model;
                                         for (var enumName in model.enums) {
                                             component.enums[enumName] = model.enums[enumName];
@@ -282,6 +291,7 @@ var SwaggerCodeGen;
                                     if (!model && !singleEnum)
                                         throw new Error("There is no Enum or Model with name" + parameter.type);
                                     if (model) {
+                                        modelCount++;
                                         component.models[model.name] = model;
                                         for (var enumName in model.enums) {
                                             component.enums[enumName] = model.enums[enumName];
@@ -292,6 +302,21 @@ var SwaggerCodeGen;
                                     }
                                 }
                             }
+                        }
+                        var isNewLinkedModelExists = true;
+                        while (isNewLinkedModelExists) {
+                            var modelAndLinkedModelCount = modelCount;
+                            for (var modelName in component.models) {
+                                var model = component.models[modelName];
+                                for (var i = 0; i < model.linkedModels.length; i++) {
+                                    var linkedModelName = model.linkedModels[i];
+                                    if (!component.models[linkedModelName]) {
+                                        modelAndLinkedModelCount++;
+                                        component.models[linkedModelName] = models[linkedModelName];
+                                    }
+                                }
+                            }
+                            isNewLinkedModelExists = modelAndLinkedModelCount > modelCount;
                         }
                         result.push(component);
                     }
@@ -332,6 +357,9 @@ var SwaggerCodeGen;
                             var parameter = operation.parameters[i];
                             var parameterView = new ParameterView();
                             parameterView.name = parameter.name;
+                            if (parameter.description) {
+                                parameterView.description = parameter.description;
+                            }
                             switch (parameter.in) {
                                 case 'body':
                                     if (parameter.schema.$ref) {
