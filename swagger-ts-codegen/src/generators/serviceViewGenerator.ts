@@ -208,7 +208,7 @@ module SwaggerCodeGen.Generators.Services {
             var methodView = new MethodView();
             methodView.httpVerb = httpVerb.toUpperCase();
             methodView.link = link;
-            methodView.operationId = operation.operationId.replace(/\./g, '');//workaround for ids with dot, but it could be wrong swagger generation or may need more work
+            methodView.operationId = operation.operationId.slice(operation.operationId.lastIndexOf('.'));//workaround for ids with dot, but it could be wrong swagger generation or may need more work
             methodView.description = operation.description;
 
             if (operation.parameters) {
