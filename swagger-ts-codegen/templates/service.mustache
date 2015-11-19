@@ -33,7 +33,7 @@ export class {{name}}Service{
         extraHttpRequestParams?: any): angular.IHttpPromise<{{response}}> {
 
         const path = this.basePath + '{{{link}}}'{{#pathParameters}}
-            .replace('{' + '{{name}}' + '}', {{name}}){{/pathParameters}};{{#pathParameters}}
+            .replace('{' + '{{name}}' + '}', {{name}}.toString()){{/pathParameters}};{{#pathParameters}}
         if (!{{name}}) {
             throw new Error('Missing required parameter {{name}} when calling {{operationId}}');
         }{{/pathParameters}}
