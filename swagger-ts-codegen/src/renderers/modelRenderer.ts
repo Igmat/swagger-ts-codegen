@@ -1,7 +1,6 @@
 ﻿module SwaggerCodeGen.Renderers.Models {
     var Mustache: MustacheStatic = require('mustache');
 
-
     export class RenderedModel {
         public name: string;
         public content: string;

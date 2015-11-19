@@ -1,5 +1,4 @@
 ﻿module SwaggerCodeGen.Renderers.Enums {
-
     var Mustache: MustacheStatic = require('mustache');
 
     //internal class for mustache template

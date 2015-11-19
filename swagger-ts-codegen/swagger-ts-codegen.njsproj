@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>70cf7b7a-0f19-42ef-be04-844dff93a2a4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>src\app.ts</StartupFile>
+    <StartupFile>test.ts</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -55,6 +55,7 @@
     <TypeScriptCompile Include="src\renderers\modelRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\serviceRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\serviceRenderer.ts" />
+    <TypeScriptCompile Include="test.ts" />
     <TypeScriptCompile Include="typings\mustache\mustache.d.ts" />
     <TypeScriptCompile Include="typings\node\node.d.ts" />
     <TypeScriptCompile Include="typings\tsd.d.ts" />

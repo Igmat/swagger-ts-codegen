@@ -58,6 +58,6 @@
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.registerTask('default', ['concat', 'typescript', 'dtsGenerator', 'clean']);
-
+    grunt.registerTask('test-build', ['concat', 'typescript', 'dtsGenerator']);
 
 };

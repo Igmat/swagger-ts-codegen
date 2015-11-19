@@ -1,8 +1,8 @@
 /// <reference path="../Scripts/typings/swagger/swagger.d.ts" />
 /// <reference path="../typings/tsd.d.ts" />
+var fs = require('fs');
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
-    var fs = require('fs');
     var modelTemplatePath = __dirname + '/../templates/model.mustache';
     var enumTemplatePath = __dirname + '/../templates/enum.mustache';
     var serviceTemplatePath = __dirname + '/../templates/service.mustache';
@@ -123,7 +123,23 @@ var SwaggerCodeGen;
                         var propertyView = new PropertyView();
                         propertyView.name = property;
                         var propertyDesc = definition.properties[property];
-                        propertyView.type = propertyDesc.type;
+                        switch (propertyDesc.type) {
+                            case "boolean":
+                                propertyView.type = "boolean";
+                                break;
+                            case "string":
+                                propertyView.type = "string";
+                                break;
+                            case "number":
+                                propertyView.type = "number";
+                                break;
+                            case "integer":
+                                propertyView.type = "number";
+                                break;
+                            default:
+                                propertyView.type = propertyDesc.type;
+                                break;
+                        }
                         var propertyItems = propertyDesc.items;
                         if (propertyDesc.enum) {
                             var enumView = this.enumGenerator.GenerateEnum(property, propertyDesc.enum, modelView.name);
@@ -137,7 +153,22 @@ var SwaggerCodeGen;
                                 propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
                             }
                             if (propertyItems.type) {
-                                propertyView.type = propertyItems.type;
+                                switch (propertyItems.type) {
+                                    case "boolean":
+                                        propertyView.type = "boolean";
+                                        break;
+                                    case "string":
+                                        propertyView.type = "string";
+                                        break;
+                                    case "number":
+                                        propertyView.type = "number";
+                                        break;
+                                    case "integer":
+                                        propertyView.type = "number";
+                                        break;
+                                    default:
+                                        throw new Error("Unsupported type of property");
+                                }
                             }
                             if (propertyItems.enum) {
                                 var enumView = this.enumGenerator.GenerateEnum(property, propertyItems.enum, modelView.name);
@@ -239,7 +270,7 @@ var SwaggerCodeGen;
                                 var model = models[method.response];
                                 var singleEnum = this.enumGenerator.enums[method.response];
                                 if (!model && !singleEnum)
-                                    throw new Error("There is no Enum or Model with name" + method.response);
+                                    throw new Error("There is no Enum or Model with name " + method.response + " for method: " + component.name + "." + method.operationId);
                                 if (model) {
                                     component.models[model.name] = model;
                                     for (var enumName in model.enums) {
@@ -248,6 +279,26 @@ var SwaggerCodeGen;
                                 }
                                 if (singleEnum) {
                                     component.enums[method.response] = singleEnum;
+                                }
+                            }
+                            if (method.bodyParameter) {
+                                if (method.bodyParameter.type != "string" &&
+                                    method.bodyParameter.type != "number" &&
+                                    method.bodyParameter.type != "boolean" &&
+                                    method.bodyParameter.type != "any") {
+                                    var model = models[method.bodyParameter.type];
+                                    var singleEnum = this.enumGenerator.enums[method.bodyParameter.type];
+                                    if (!model && !singleEnum)
+                                        throw new Error("There is no Enum or Model with name " + method.bodyParameter.type + " for method: " + component.name + "." + method.operationId);
+                                    if (model) {
+                                        component.models[model.name] = model;
+                                        for (var enumName in model.enums) {
+                                            component.enums[enumName] = model.enums[enumName];
+                                        }
+                                    }
+                                    if (singleEnum) {
+                                        component.enums[method.bodyParameter.type] = singleEnum;
+                                    }
                                 }
                             }
                             for (var j = 0; j < method.pathParameters.length; j++) {
@@ -259,7 +310,7 @@ var SwaggerCodeGen;
                                     var model = models[parameter.type];
                                     var singleEnum = this.enumGenerator.enums[parameter.type];
                                     if (!model && !singleEnum)
-                                        throw new Error("There is no Enum or Model with name" + parameter.type);
+                                        throw new Error("There is no Enum or Model with name " + parameter.type + " for method: " + component.name + "." + method.operationId);
                                     if (model) {
                                         component.models[model.name] = model;
                                         for (var enumName in model.enums) {
@@ -267,7 +318,7 @@ var SwaggerCodeGen;
                                         }
                                     }
                                     if (singleEnum) {
-                                        component.enums[method.response] = singleEnum;
+                                        component.enums[parameter.type] = singleEnum;
                                     }
                                 }
                             }
@@ -280,7 +331,7 @@ var SwaggerCodeGen;
                                     var model = models[parameter.type];
                                     var singleEnum = this.enumGenerator.enums[parameter.type];
                                     if (!model && !singleEnum)
-                                        throw new Error("There is no Enum or Model with name" + parameter.type);
+                                        throw new Error("There is no Enum or Model with name" + parameter.type + " for method: " + component.name + "." + method.operationId);
                                     if (model) {
                                         component.models[model.name] = model;
                                         for (var enumName in model.enums) {
@@ -288,7 +339,7 @@ var SwaggerCodeGen;
                                         }
                                     }
                                     if (singleEnum) {
-                                        component.enums[method.response] = singleEnum;
+                                        component.enums[parameter.type] = singleEnum;
                                     }
                                 }
                             }
@@ -344,7 +395,22 @@ var SwaggerCodeGen;
                                             result.enums[enumView.name] = enumView;
                                         }
                                         else {
-                                            throw new Error("Unsupported type of body parameter");
+                                            switch (parameter.schema.type) {
+                                                case "boolean":
+                                                    parameterView.type = "boolean";
+                                                    break;
+                                                case "string":
+                                                    parameterView.type = "string";
+                                                    break;
+                                                case "number":
+                                                    parameterView.type = "number";
+                                                    break;
+                                                case "integer":
+                                                    parameterView.type = "number";
+                                                    break;
+                                                default:
+                                                    throw new Error("Unsupported type of body parameter");
+                                            }
                                         }
                                     }
                                     parameterView.optional = !parameter.required;
@@ -358,6 +424,9 @@ var SwaggerCodeGen;
                                     }
                                     else {
                                         switch (parameter.type) {
+                                            case "boolean":
+                                                parameterView.type = "boolean";
+                                                break;
                                             case "string":
                                                 parameterView.type = "string";
                                                 break;
@@ -382,6 +451,9 @@ var SwaggerCodeGen;
                                     }
                                     else {
                                         switch (parameter.type) {
+                                            case "boolean":
+                                                parameterView.type = "boolean";
+                                                break;
                                             case "string":
                                                 parameterView.type = "string";
                                                 break;
@@ -404,14 +476,29 @@ var SwaggerCodeGen;
                         }
                     }
                     if (operation.responses) {
-                        for (var shema in operation.responses) {
-                            var typeRef = operation.responses[shema];
-                            if (typeRef.schema) {
-                                if (typeRef.schema.$ref) {
-                                    methodView.response = typeRef.schema.$ref.slice("#/definitions/".length);
+                        for (var responseName in operation.responses) {
+                            var response = operation.responses[responseName];
+                            if (response.schema) {
+                                if (response.schema.$ref) {
+                                    methodView.response = response.schema.$ref.slice("#/definitions/".length);
                                 }
                                 else {
-                                    methodView.response = "any";
+                                    switch (response.schema.type) {
+                                        case "boolean":
+                                            methodView.response = "boolean";
+                                            break;
+                                        case "string":
+                                            methodView.response = "string";
+                                            break;
+                                        case "number":
+                                            methodView.response = "number";
+                                            break;
+                                        case "integer":
+                                            methodView.response = "number";
+                                            break;
+                                        default:
+                                            throw new Error("Unsupported type of response");
+                                    }
                                 }
                             }
                             else {

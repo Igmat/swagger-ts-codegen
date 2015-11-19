@@ -1,5 +1,4 @@
-﻿
-module SwaggerCodeGen.Generators.Models {
+﻿module SwaggerCodeGen.Generators.Models {
 
     export class ModelView {
         public name: string;
@@ -42,7 +41,23 @@ module SwaggerCodeGen.Generators.Models {
                 var propertyView: PropertyView = new PropertyView();
                 propertyView.name = property;
                 var propertyDesc = definition.properties[property];
-                propertyView.type = propertyDesc.type;
+                switch (propertyDesc.type) {//for primitives
+                    case "boolean":
+                        propertyView.type = "boolean";
+                        break;
+                    case "string":
+                        propertyView.type = "string";
+                        break;
+                    case "number":
+                        propertyView.type = "number";
+                        break;
+                    case "integer":
+                        propertyView.type = "number";
+                        break;
+                    default:
+                        propertyView.type = propertyDesc.type;
+                        break;
+                }                
 
                 var propertyItems: Swagger.Schema = propertyDesc.items;
 
@@ -60,7 +75,22 @@ module SwaggerCodeGen.Generators.Models {
                         propertyView.type = propertyItems.$ref.slice("#/definitions/".length);
                     }
                     if (propertyItems.type) {
-                        propertyView.type = propertyItems.type;
+                        switch (propertyItems.type) {//for primitives
+                            case "boolean":
+                                propertyView.type = "boolean";
+                                break;
+                            case "string":
+                                propertyView.type = "string";
+                                break;
+                            case "number":
+                                propertyView.type = "number";
+                                break;
+                            case "integer":
+                                propertyView.type = "number";
+                                break;
+                            default:
+                                throw new Error("Unsupported type of property");
+                        }
                     }
                     if (propertyItems.enum) {
                         var enumView = this.enumGenerator.GenerateEnum(property, propertyItems.enum, modelView.name);

@@ -1,6 +1,5 @@
 ﻿module SwaggerCodeGen.Renderers.Component {
 
-
     export class RenderedComponent {
         public name: string;
         public enums: Enums.RenderedEnum[];
