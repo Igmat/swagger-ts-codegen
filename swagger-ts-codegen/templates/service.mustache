@@ -20,8 +20,12 @@ export class {{name}}Service{
     }
 
     {{#methods}}
-
-    //{{description}}
+    {{=<% %>=}}/**
+    * <%description%><%#pathParameters%>
+    * @param {<%type%>} <%name%> - <%description%><%/pathParameters%><%#queryParameters%>
+    * @param {<%type%>} <%name%> - <%description%><%/queryParameters%><%#bodyParameter%>
+    * @param {<%type%>} <%name%> - <%description%><%/bodyParameter%>
+    */<%={{ }}=%>
     public {{operationId}}({{#pathParameters}}
         {{name}}: {{type}}, {{/pathParameters}}{{#queryParameters}}
         {{name}}{{#optional}}?{{/optional}}: {{type}}, {{/queryParameters}}{{#bodyParameter}}

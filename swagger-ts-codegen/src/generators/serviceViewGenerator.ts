@@ -4,6 +4,7 @@ module SwaggerCodeGen.Generators.Services {
         public name: string;
         public type: string;
         public optional: boolean;
+        public description: string;
 
         constructor() {
 
@@ -80,6 +81,7 @@ module SwaggerCodeGen.Generators.Services {
                 let component = new Component();
                 component.name = service.name;
                 component.service = service;
+                let modelCount = 0;
                 for (let enumName in service.enums) {
                     component.enums[enumName] = service.enums[enumName];
                 }
@@ -94,6 +96,7 @@ module SwaggerCodeGen.Generators.Services {
                         if (!model && !singleEnum) throw new Error("There is no Enum or Model with name " + method.response + " for method: " + component.name + "." + method.operationId);
                         if (model) {
                             component.models[model.name] = model;
+                            modelCount++;
                             for (let enumName in model.enums) {
                                 component.enums[enumName] = model.enums[enumName];
                             }
@@ -133,6 +136,7 @@ module SwaggerCodeGen.Generators.Services {
                             let singleEnum = this.enumGenerator.enums[parameter.type];
                             if (!model && !singleEnum) throw new Error("There is no Enum or Model with name " + parameter.type + " for method: " + component.name + "." + method.operationId);
                             if (model) {
+                                modelCount++;
                                 component.models[model.name] = model;
                                 for (let enumName in model.enums) {
                                     component.enums[enumName] = model.enums[enumName];
@@ -154,6 +158,7 @@ module SwaggerCodeGen.Generators.Services {
                             let singleEnum = this.enumGenerator.enums[parameter.type];
                             if (!model && !singleEnum) throw new Error("There is no Enum or Model with name" + parameter.type + " for method: " + component.name + "." + method.operationId);
                             if (model) {
+                                modelCount++;
                                 component.models[model.name] = model;
                                 for (let enumName in model.enums) {
                                     component.enums[enumName] = model.enums[enumName];
@@ -164,6 +169,23 @@ module SwaggerCodeGen.Generators.Services {
                             }
                         }
                     }
+                }
+
+                //Code for recursive check of links from one model to another
+                let isNewLinkedModelExists = true;
+                while (isNewLinkedModelExists) {
+                    let modelAndLinkedModelCount = modelCount;
+                    for (let modelName in component.models) {
+                        let model = component.models[modelName];
+                        for (let i = 0; i < model.linkedModels.length; i++) {
+                            let linkedModelName = model.linkedModels[i];
+                            if (!component.models[linkedModelName]) {
+                                modelAndLinkedModelCount++;
+                                component.models[linkedModelName] = models[linkedModelName];
+                            }
+                        }
+                    }
+                    isNewLinkedModelExists = modelAndLinkedModelCount > modelCount;
                 }
 
                 result.push(component);
@@ -205,7 +227,7 @@ module SwaggerCodeGen.Generators.Services {
             var methodView = new MethodView();
             methodView.httpVerb = httpVerb.toUpperCase();
             methodView.link = link;
-            methodView.operationId = operation.operationId.replace(/\./g, '');//workaround for ids with dot, but it could be wrong swagger generation or may need more work
+            methodView.operationId = operation.operationId.slice(operation.operationId.lastIndexOf('.') + 1);//workaround for ids with dot, but it could be wrong swagger generation or may need more work
             methodView.description = operation.description;
 
             if (operation.parameters) {
@@ -213,6 +235,9 @@ module SwaggerCodeGen.Generators.Services {
                     var parameter = operation.parameters[i];
                     var parameterView = new ParameterView();
                     parameterView.name = parameter.name;
+                    if (parameter.description) {
+                        parameterView.description = parameter.description;
+                    }
 
                     switch (parameter.in) {
 

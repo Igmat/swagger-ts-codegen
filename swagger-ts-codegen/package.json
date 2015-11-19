@@ -1,6 +1,6 @@
 {
   "name": "swagger-ts-codegen",
-  "version": "0.0.6",
+  "version": "0.0.12",
   "description": "swagger-ts-codegen",
   "main": "dist/app.js",
   "author": {
@@ -30,7 +30,7 @@
     "mustache": "^2.2.0"
   },
   "typescript": {
-    "definition": "dist/swagger-ts-codegen.d.ts"
+    "definitions": [ "dist/swagger-ts-codegen.d.ts", "Scripts/typings/swagger/swagger.d.ts" ]
   },
   "devDependencies": {
     "grunt": "^0.4.5",

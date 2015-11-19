@@ -1,12 +1,10 @@
-/// <reference path="api.d.ts" />
-
 export interface {{name}}{
-'use strict';
+    'use strict';
     {{#properties}}
         /**
         * {{{description}}}
         */
-        {{name}}:{{type}}{{#isArray}}[]{{/isArray}};
+        {{name}}: {{type}}{{#isArray}}[]{{/isArray}};
     {{/properties}}
-    }
+    
 }
