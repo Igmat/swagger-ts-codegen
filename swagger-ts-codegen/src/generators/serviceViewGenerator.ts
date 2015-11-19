@@ -181,7 +181,11 @@ module SwaggerCodeGen.Generators.Services {
                             let linkedModelName = model.linkedModels[i];
                             if (!component.models[linkedModelName]) {
                                 modelAndLinkedModelCount++;
-                                component.models[linkedModelName] = models[linkedModelName];
+                                let model = models[linkedModelName];
+                                component.models[linkedModelName] = model;
+                                for (let enumName in model.enums) {
+                                    component.enums[enumName] = model.enums[enumName];
+                                }
                             }
                         }
                     }

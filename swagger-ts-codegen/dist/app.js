@@ -363,7 +363,11 @@ var SwaggerCodeGen;
                                     var linkedModelName = model.linkedModels[i];
                                     if (!component.models[linkedModelName]) {
                                         modelAndLinkedModelCount++;
-                                        component.models[linkedModelName] = models[linkedModelName];
+                                        var model_1 = models[linkedModelName];
+                                        component.models[linkedModelName] = model_1;
+                                        for (var enumName in model_1.enums) {
+                                            component.enums[enumName] = model_1.enums[enumName];
+                                        }
                                     }
                                 }
                             }
