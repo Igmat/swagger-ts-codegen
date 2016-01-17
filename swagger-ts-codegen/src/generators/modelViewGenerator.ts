@@ -49,6 +49,7 @@
                         break;
                     case "string":
                         propertyView.type = "string";
+                        propertyDesc.format
                         break;
                     case "number":
                         propertyView.type = "number";

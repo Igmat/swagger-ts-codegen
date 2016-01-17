@@ -35,8 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="swagger\swagger.json" />
+    <Content Include="templates\chanceOverride.mustache" />
     <Content Include="templates\enum.mustache" />
+    <Content Include="templates\mock.mustache" />
+    <Content Include="templates\mockOverride.mustache" />
     <Content Include="templates\model.mustache" />
+    <Content Include="templates\chance.mustache" />
     <Content Include="templates\service.mustache" />
     <Content Include="tsd.json" />
     <TypeScriptCompile Include="dist\swagger-ts-codegen.d.ts" />
@@ -51,6 +55,7 @@
     <TypeScriptCompile Include="src\renderers\componentRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\enumRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\enumRenderer.ts" />
+    <TypeScriptCompile Include="src\renderers\mockRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\modelRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\modelRenderer.ts" />
     <TypeScriptCompile Include="src\renderers\serviceRenderer.ts" />

@@ -8,6 +8,18 @@ declare module 'swagger-ts-codegen/app' {
 
     var serviceTemplate: string;
 
+    var mockTemplates: {
+
+        mockTemplate: string;
+
+        mockOverrideTemplate: string;
+
+        chanceTemplate: string;
+
+        chanceOverrideTemplate: string;
+
+    };
+
 }
 
 export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
@@ -206,6 +218,8 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         service: Services.RenderedService;
 
+        mocks: Mocks.RenderedMock;
+
         constructor();
 
     }
@@ -218,7 +232,9 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         private serviceRenderer;
 
-        constructor(enumRendererDefiner: Enums.EnumRenderer | string, modelRendererDefiner: Models.ModelRenderer | string, serviceRendererDefiner: Services.ServiceRenderer | string);
+        private mockRenderer;
+
+        constructor(enumRendererDefiner: Enums.EnumRenderer | string, modelRendererDefiner: Models.ModelRenderer | string, serviceRendererDefiner: Services.ServiceRenderer | string, mockRendererDefiner: Mocks.MockRenderer | Mocks.MockTemplates);
 
         RenderComponent(componentView: Generators.Services.Component): RenderedComponent;
 
@@ -249,6 +265,62 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
         RenderEnums(enumViews: Generators.Enums.EnumView[]): RenderedEnum[];
 
         RenderEnumCollection(enumViews: Generators.Enums.EnumViewCollection): RenderedEnum[];
+
+    }
+
+} module SwaggerCodeGen.Renderers.Mocks {
+
+    class RenderedMock {
+
+        content: string;
+
+        contentOverride: string;
+
+        chanceHelper: string;
+
+        chanceOverride: string;
+
+        constructor(content: string, contentOverride: string, chanceHelper: string, chanceOverride: string);
+
+    }
+
+    class MockTemplates {
+
+        mockTemplate: string;
+
+        mockOverrideTemplate: string;
+
+        chanceTemplate: string;
+
+        chanceOverrideTemplate: string;
+
+        constructor(mockTemplate: string, mockOverrideTemplate: string, chanceTemplate: string, chanceOverrideTemplate: string);
+
+    }
+
+    class MockRenderer {
+
+        private mockTemplate;
+
+        private mockOverrideTemplate;
+
+        private chanceTemplate;
+
+        private chanceOverrideTemplate;
+
+        constructor(templates: MockTemplates);
+
+        RenderChanceHelper(models: Generators.Models.ModelViewCollection, enums: Generators.Enums.EnumViewCollection): string;
+
+        RenderChanceHelperOverride(models: Generators.Models.ModelViewCollection): string;
+
+        RenderMockContent(serviceView: Generators.Services.ServiceView): string;
+
+        RenderMockContentOverride(serviceView: Generators.Services.ServiceView): string;
+
+        RenderMock(component: Generators.Services.Component): RenderedMock;
+
+        RenderMocks(components: Generators.Services.Component[]): RenderedMock[];
 
     }
 

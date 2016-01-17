@@ -1,0 +1,53 @@
+interface IPathCheckFuncs {
+    [index: string]: (value: string) => boolean;
+}
+
+export function {{name}}($httpBackend: ng.IHttpBackendService) {
+    const chance = new ExtendedChance();
+
+    {{#methods}}
+    $httpBackend.when(
+        '{{httpVerb}}',
+        (url: string): boolean => {
+            let result = true;
+            const pathSegments = '{{{link}}}'.split("/");
+            const pathCheckFuncs: IPathCheckFuncs = {
+                {{#pathParameters}}
+                {{nane}}: (value: string) => { {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}} }
+                {{/pathParameters}}
+            };
+            let urlSegments = url.split("/");
+            if (pathSegments.length != urlSegments.length) {
+                result = false;
+            } else {
+                for (let i = 0; i < pathSegments.length; i++) {
+                    let pathSegment = pathSegments[i];
+                    let urlSegment = urlSegments[i];
+                    if (pathSegment[0] != "{") {
+                        if (pathSegment != urlSegment) result = false;
+                    } else {
+                        let pathIndex = pathSegment.slice(1, -1);
+                        if (!pathCheckFuncs[pathIndex](urlSegment)) result = false;
+                    }
+                }
+            }
+            result = {{name}}Override.{{operationId}}.UrlCheck(url, result);
+            return result;
+        },
+        (data: string): boolean => {
+            let result = true;
+            result = {{name}}Override.{{operationId}}.DataCheck(data, result);
+            return result;
+        },
+        (headers: Object): boolean => {
+            let result = true;
+            result = {{name}}Override.{{operationId}}.HeadersCheck(headers, result);
+            return result;
+        }
+    ).respond((method: string, url: string, data: string | Object, headers: Object): [number, string | Object, Object, string] => {
+        let result: [number, string | Object, Object, string] = [200, chance.{{response}}(), undefined, undefined];
+        result = {{name}}Override.{{operationId}}.Response(method, url, data, headers, result);
+        return result;
+    });
+    {{/methods}}
+}

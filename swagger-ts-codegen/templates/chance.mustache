@@ -1,0 +1,29 @@
+export class ExtendedChance extends Chance{
+    constructor() {
+        super();
+    }
+    
+    /*Enums*/
+    {{#enums}}
+    public {{name}}(): {{name}} {
+        var entities = [
+        {{#entities}}
+            '{{name}}',
+        {{/entities}}
+        ];
+        return this.pick(entities);
+    }
+    {{/enums}}
+    
+    /*Models*/
+    {{#models}}
+    public {{name}}(): {{name}} {
+        var result: {{name}} = {
+        {{#properties}}
+            {{name}}: {{#isArray}}this.unique({{/isArray}}this.{{type}}{{#isArray}}, 40){{/isArray}}{{^isArray}}(){{/isArray}}{{#suffixFunc}}.{{content}}{{/suffixFunc}},
+        {{/properties}}
+        };
+        return ExtendedChanceOverride.{{name}}(result, this);
+    }
+    {{/models}}
+}

@@ -1,0 +1,27 @@
+﻿export interface OperationOverride {
+    UrlCheck: (url: string, result: boolean) => boolean;
+    DataCheck: (url: string, result: boolean) => boolean;
+    HeadersCheck: (url: string, result: boolean) => boolean;
+    Response: (method: string, url: string, data: string | Object, headers: Object, result: [number, string | Object, Object, string]) => [number, string | Object, Object, string]
+}
+
+export class {{name}}Override {
+    //const chance = new ExtendedChance();
+
+    {{#methods}}
+    public static {{operationId}}: OperationOverride = {
+        UrlCheck: (url: string, result: boolean): boolean => {
+            return result;
+        },
+        DataCheck: (data: string, result: boolean): boolean => {
+            return result;
+        },
+        HeadersCheck: (headers: string, result: boolean): boolean => {
+            return result;
+        },
+        Response: (method: string, url: string, data: string | Object, headers: Object, result: [number, string | Object, Object, string]): [number, string | Object, Object, string] => {
+            return result;
+        }
+    },
+    {{/methods}}
+}

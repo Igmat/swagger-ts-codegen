@@ -1,0 +1,11 @@
+export class ExtendedChanceOverride{
+    {{#models}}
+    public static {{name}}(model: {{name}}, extendedChance: ExtendedChance): {{name}} {
+        {{#properties}}
+            //model.{{name}}: {{#isArray}}extendedChance.unique({{/isArray}}extendedChance.{{type}}{{#isArray}}, 40){{/isArray}}{{^isArray}}(){{/isArray}}{{#suffixFunc}}.{{content}}{{/suffixFunc}},
+        {{/properties}}
+        };
+        return model;
+    }
+    {{/models}}
+}
