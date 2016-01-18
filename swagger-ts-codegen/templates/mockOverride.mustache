@@ -5,11 +5,11 @@
     Response: (method: string, url: string, data: string | Object, headers: Object, result: [number, string | Object, Object, string]) => [number, string | Object, Object, string]
 }
 
-export class {{name}}Override {
+export class {{name}}RequestsOverride {
     //const chance = new ExtendedChance();
 
     {{#methods}}
-    /*Mock override for: {{httpVerb}} {{{link}}}*/
+    /*-- Mock override for: {{httpVerb}} {{{link}}} --*/
     public static {{operationId}}: OperationOverride = {
         UrlCheck: (url: string, result: boolean): boolean => {
             return result;

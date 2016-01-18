@@ -2,11 +2,11 @@ interface IPathCheckFuncs {
     [index: string]: (value: string) => boolean;
 }
 
-export function {{name}}($httpBackend: ng.IHttpBackendService) {
+export function {{name}}Requests($httpBackend: ng.IHttpBackendService) {
     const chance = new ExtendedChance();
 
     {{#methods}}
-    /*Mock for: {{httpVerb}} {{{link}}}*/
+    /*-- Mock for: {{httpVerb}} {{{link}}} --*/
     $httpBackend.when(
         '{{httpVerb}}',
         (url: string): boolean => {
@@ -32,22 +32,22 @@ export function {{name}}($httpBackend: ng.IHttpBackendService) {
                     }
                 }
             }
-            result = {{name}}Override.{{operationId}}.UrlCheck(url, result);
+            result = {{name}}RequestsOverride.{{operationId}}.UrlCheck(url, result);
             return result;
         },
         (data: string): boolean => {
             let result = true;
-            result = {{name}}Override.{{operationId}}.DataCheck(data, result);
+            result = {{name}}RequestsOverride.{{operationId}}.DataCheck(data, result);
             return result;
         },
         (headers: Object): boolean => {
             let result = true;
-            result = {{name}}Override.{{operationId}}.HeadersCheck(headers, result);
+            result = {{name}}RequestsOverride.{{operationId}}.HeadersCheck(headers, result);
             return result;
         }
     ).respond((method: string, url: string, data: string | Object, headers: Object): [number, string | Object, Object, string] => {
         let result: [number, string | Object, Object, string] = [200, {{#response}}chance.{{content}}(){{/response}}{{^response}}undefined{{/response}}, undefined, undefined];
-        result = {{name}}Override.{{operationId}}.Response(method, url, data, headers, result);
+        result = {{name}}RequestsOverride.{{operationId}}.Response(method, url, data, headers, result);
         return result;
     });
     

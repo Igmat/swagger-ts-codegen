@@ -329,11 +329,11 @@
                 this.bodyParameter = new ParameterViewWrapper(method.bodyParameter);
             }
             this.pathParameters = [];
-            for (let pathParameter in method.pathParameters) {
+            for (let pathParameter of method.pathParameters) {
                 this.pathParameters.push(new ParameterViewWrapper(pathParameter));
             }
             this.queryParameters = [];
-            for (let queryParameter in method.queryParameters) {
+            for (let queryParameter of method.queryParameters) {
                 this.queryParameters.push(new ParameterViewWrapper(queryParameter));
             }
         }

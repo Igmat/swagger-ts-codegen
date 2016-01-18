@@ -954,11 +954,13 @@ var SwaggerCodeGen;
                         this.bodyParameter = new ParameterViewWrapper(method.bodyParameter);
                     }
                     this.pathParameters = [];
-                    for (var pathParameter in method.pathParameters) {
+                    for (var _i = 0, _a = method.pathParameters; _i < _a.length; _i++) {
+                        var pathParameter = _a[_i];
                         this.pathParameters.push(new ParameterViewWrapper(pathParameter));
                     }
                     this.queryParameters = [];
-                    for (var queryParameter in method.queryParameters) {
+                    for (var _b = 0, _c = method.queryParameters; _b < _c.length; _b++) {
+                        var queryParameter = _c[_b];
                         this.queryParameters.push(new ParameterViewWrapper(queryParameter));
                     }
                 }
