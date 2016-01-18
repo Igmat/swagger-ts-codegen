@@ -6,6 +6,7 @@ export function {{name}}($httpBackend: ng.IHttpBackendService) {
     const chance = new ExtendedChance();
 
     {{#methods}}
+    /*Mock for: {{httpVerb}} {{{link}}}*/
     $httpBackend.when(
         '{{httpVerb}}',
         (url: string): boolean => {
@@ -45,9 +46,10 @@ export function {{name}}($httpBackend: ng.IHttpBackendService) {
             return result;
         }
     ).respond((method: string, url: string, data: string | Object, headers: Object): [number, string | Object, Object, string] => {
-        let result: [number, string | Object, Object, string] = [200, chance.{{response}}(), undefined, undefined];
+        let result: [number, string | Object, Object, string] = [200, {{#response}}chance.{{content}}(){{/response}}{{^response}}undefined{{/response}}, undefined, undefined];
         result = {{name}}Override.{{operationId}}.Response(method, url, data, headers, result);
         return result;
     });
+    
     {{/methods}}
 }

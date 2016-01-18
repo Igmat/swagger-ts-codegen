@@ -9,6 +9,7 @@ export class {{name}}Override {
     //const chance = new ExtendedChance();
 
     {{#methods}}
+    /*Mock override for: {{httpVerb}} {{{link}}}*/
     public static {{operationId}}: OperationOverride = {
         UrlCheck: (url: string, result: boolean): boolean => {
             return result;
@@ -23,5 +24,6 @@ export class {{name}}Override {
             return result;
         }
     }
+
     {{/methods}}
 }

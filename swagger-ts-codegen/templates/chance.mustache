@@ -11,7 +11,7 @@ export class ExtendedChance extends Chance{
             '{{name}}',
         {{/entities}}
         ];
-        return this.pick(entities);
+        return this.pick(entities) as any;
     }
     {{/enums}}
     

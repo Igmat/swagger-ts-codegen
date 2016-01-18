@@ -287,6 +287,12 @@
     }
 
     //internal class for mustache template
+    class ResponseWrapper {
+        constructor(public content: string) {
+        }
+    }
+
+    //internal class for mustache template
     class MethodViewWrapper {
         public operationId: string;
         public link: string;
@@ -295,26 +301,28 @@
         public pathParameters: ParameterViewWrapper[];
         public queryParameters: ParameterViewWrapper[];
         public bodyParameter: ParameterViewWrapper;
-        public response: string;
+        public response: ResponseWrapper;
 
         constructor(method: Generators.Services.MethodView) {
             this.operationId = method.operationId;
             this.link = method.link;
             this.httpVerb = method.httpVerb;
             this.description = method.description;
-            this.response = method.response;
             switch (method.response) {
                 case 'string':
-                    this.response = "string";
+                    this.response = new ResponseWrapper("string");
                     break;
                 case 'boolean':
-                    this.response = "bool"
+                    this.response = new ResponseWrapper("bool");
                     break;
                 case 'number':
-                    this.response = "integer";
+                    this.response = new ResponseWrapper("integer");
+                    break;
+                case 'any':
+                    this.response = undefined;
                     break;
                 default:
-                    this.response = method.response;
+                    this.response = new ResponseWrapper(method.response);
                     break;
             }
             if (method.bodyParameter) {
