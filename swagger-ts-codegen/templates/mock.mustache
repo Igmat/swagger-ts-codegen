@@ -14,7 +14,7 @@ export function {{name}}Requests($httpBackend: ng.IHttpBackendService) {
             const pathSegments = '{{{link}}}'.split("/");
             const pathCheckFuncs: IPathCheckFuncs = {
                 {{#pathParameters}}
-                {{name}}: (value: string) => { {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}} }
+                {{name}}: (value: string) => { {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}} },
                 {{/pathParameters}}
             };
             let urlSegments = url.split("/");
