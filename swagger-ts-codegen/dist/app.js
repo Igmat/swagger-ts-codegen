@@ -10,6 +10,7 @@ var SwaggerCodeGen;
     var mockOverrideTemplatePath = __dirname + '/../templates/mockOverride.mustache';
     var chanceTemplatePath = __dirname + '/../templates/chance.mustache';
     var chanceOverrideTemplatePath = __dirname + '/../templates/chanceOverride.mustache';
+    var mockHelpersTemplatePath = __dirname + '/../templates/mockHelpers.mustache';
     SwaggerCodeGen.modelTemplate = fs.readFileSync(modelTemplatePath, 'UTF-8');
     SwaggerCodeGen.enumTemplate = fs.readFileSync(enumTemplatePath, 'UTF-8');
     SwaggerCodeGen.serviceTemplate = fs.readFileSync(serviceTemplatePath, 'UTF-8');
@@ -19,6 +20,7 @@ var SwaggerCodeGen;
         chanceTemplate: fs.readFileSync(chanceTemplatePath, 'UTF-8'),
         chanceOverrideTemplate: fs.readFileSync(chanceOverrideTemplatePath, 'UTF-8'),
     };
+    SwaggerCodeGen.mockHelpersTemplate = fs.readFileSync(mockHelpersTemplatePath, 'UTF-8');
 })(SwaggerCodeGen || (SwaggerCodeGen = {}));
 var SwaggerCodeGen;
 (function (SwaggerCodeGen) {
@@ -564,6 +566,7 @@ var SwaggerCodeGen;
     (function (Renderers) {
         var Component;
         (function (Component) {
+            var Mustache = require('mustache');
             var RenderedComponent = (function () {
                 function RenderedComponent() {
                     this.enums = [];
@@ -572,8 +575,15 @@ var SwaggerCodeGen;
                 return RenderedComponent;
             })();
             Component.RenderedComponent = RenderedComponent;
+            var RenderedComponents = (function () {
+                function RenderedComponents() {
+                    this.Components = [];
+                }
+                return RenderedComponents;
+            })();
+            Component.RenderedComponents = RenderedComponents;
             var ComponentRenderer = (function () {
-                function ComponentRenderer(enumRendererDefiner, modelRendererDefiner, serviceRendererDefiner, mockRendererDefiner) {
+                function ComponentRenderer(enumRendererDefiner, modelRendererDefiner, serviceRendererDefiner, mockRendererDefiner, mockHelpersTemplate) {
                     if (typeof enumRendererDefiner === "string") {
                         this.enumRenderer = new Renderers.Enums.EnumRenderer(enumRendererDefiner);
                     }
@@ -598,6 +608,7 @@ var SwaggerCodeGen;
                     else {
                         this.mockRenderer = new Renderers.Mocks.MockRenderer(mockRendererDefiner);
                     }
+                    this.mockHelpersTemplate = mockHelpersTemplate;
                 }
                 ComponentRenderer.prototype.RenderComponent = function (componentView) {
                     var result = new RenderedComponent();
@@ -609,9 +620,10 @@ var SwaggerCodeGen;
                     return result;
                 };
                 ComponentRenderer.prototype.RenderComponents = function (componentViews) {
-                    var result = [];
+                    var result = new RenderedComponents();
+                    result.MockHelpers = Mustache.render(this.mockHelpersTemplate, {});
                     for (var i = 0; i < componentViews.length; i++) {
-                        result.push(this.RenderComponent(componentViews[i]));
+                        result.Components.push(this.RenderComponent(componentViews[i]));
                     }
                     return result;
                 };

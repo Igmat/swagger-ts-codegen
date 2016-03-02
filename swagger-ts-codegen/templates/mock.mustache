@@ -1,53 +1,39 @@
-interface IPathCheckFuncs {
-    [index: string]: (value: string) => boolean;
-}
-
 export function {{name}}Requests($httpBackend: ng.IHttpBackendService) {
     const chance = new ExtendedChance();
 
     {{#methods}}
     /*-- Mock for: {{httpVerb}} {{{link}}} --*/
+    const {{operationId}}CheckOptions: MockHelpers.IUrlMatchOptions = {
+        PathSegments: '{{{link}}}'.split("/"),
+        PathCheckFuncs: {
+            {{#pathParameters}}
+            {{name}}: (value: string) => { {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}} },
+            {{/pathParameters}}
+        },
+        QueryCheckFuncs: {
+            {{#queryParameters}}
+            {{name}}: (value: any) => {
+            {{#optional}}return true;{{/optional}}{{^optional}}if (value == undefined) return false;
+            {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}}{{/optional}}
+            },
+            {{/queryParameters}}
+        }
+    }
+
     $httpBackend.when(
         '{{httpVerb}}',
         (url: string): boolean => {
-            let result = true;
-            const pathSegments = '{{{link}}}'.split("/");
-            const pathCheckFuncs: IPathCheckFuncs = {
-                {{#pathParameters}}
-                {{name}}: (value: string) => { {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}} },
-                {{/pathParameters}}
-            };
-            let urlSegments = url.split("/");
-            if (pathSegments.length != urlSegments.length) {
-                result = false;
-            } else {
-                for (let i = 0; i < pathSegments.length; i++) {
-                    let pathSegment = pathSegments[i];
-                    let urlSegment = urlSegments[i];
-                    if (pathSegment[0] != "{") {
-                        if (pathSegment != urlSegment) result = false;
-                    } else {
-                        let pathIndex = pathSegment.slice(1, -1);
-                        if (!pathCheckFuncs[pathIndex](urlSegment)) result = false;
-                    }
-                }
-            }
-            result = {{name}}RequestsOverride.{{operationId}}.UrlCheck(url, result);
-            return result;
+            return MockHelpers.IsUrlMatches(url, {{operationId}}CheckOptions);
         },
         (data: string): boolean => {
-            let result = true;
-            result = {{name}}RequestsOverride.{{operationId}}.DataCheck(data, result);
-            return result;
+            return true;
         },
         (headers: Object): boolean => {
-            let result = true;
-            result = {{name}}RequestsOverride.{{operationId}}.HeadersCheck(headers, result);
-            return result;
+            return true;
         }
     ).respond((method: string, url: string, data: string | Object, headers: Object): [number, string | Object, Object, string] => {
         let result: [number, string | Object, Object, string] = [200, {{#response}}chance.{{content}}(){{/response}}{{^response}}undefined{{/response}}, undefined, undefined];
-        result = {{name}}RequestsOverride.{{operationId}}.Response(method, url, data, headers, result);
+        result = {{name}}RequestsOverride.{{operationId}}(method, url, data, headers, result);
         return result;
     });
     

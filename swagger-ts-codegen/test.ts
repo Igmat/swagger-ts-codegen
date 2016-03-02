@@ -10,7 +10,8 @@ var renderer = new swaggerTsCodegen.Renderers.Component.ComponentRenderer(
     swaggerTsCodegen.enumTemplate,
     swaggerTsCodegen.modelTemplate,
     swaggerTsCodegen.serviceTemplate,
-    swaggerTsCodegen.mockTemplates);
+    swaggerTsCodegen.mockTemplates,
+    swaggerTsCodegen.mockHelpersTemplate);
 var components = generator.GenerateComponents(swagger);
 var rendered = renderer.RenderComponents(components);
 

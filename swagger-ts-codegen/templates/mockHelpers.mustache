@@ -1,0 +1,53 @@
+﻿module MockHelpers {
+
+    export interface IPathCheckFuncs {
+        [index: string]: (value: string) => boolean;
+    }
+
+    export interface IQueryCheckFuncs {
+        [index: string]: (value: any) => boolean;
+    }
+
+    export interface IQueryParameters {
+        [index: string]: string;
+    }
+
+    export interface IUrlMatchOptions {
+        PathSegments: string[];
+        PathCheckFuncs: IPathCheckFuncs;
+        QueryCheckFuncs: IQueryCheckFuncs;
+    }
+
+    export function IsUrlMatches(url: string, options: IUrlMatchOptions) {
+        let querySegments = (url.indexOf("?") >= 0) ?
+            url.slice(url.indexOf("?") + 1).split("&") :
+            [];
+        let queryParameters: IQueryParameters = {};
+        for (var query of querySegments) {
+            queryParameters[query.slice(0, query.indexOf("="))] = query.slice(query.indexOf("=") + 1);
+        }
+        for (var parameterName in options.QueryCheckFuncs) {
+            if (!options.QueryCheckFuncs[parameterName](queryParameters[parameterName])) return false;
+        }
+
+        let urlSegments = (url.indexOf("?") >= 0) ?
+            url.slice(0, url.indexOf("?")).split("/") :
+            url.split("/");
+        if (options.PathSegments.length != urlSegments.length) {
+            return false;
+        } else {
+            for (let i = 0; i < options.PathSegments.length; i++) {
+                let pathSegment = options.PathSegments[i];
+                let urlSegment = urlSegments[i];
+                if (pathSegment[0] != "{") {
+                    if (pathSegment != urlSegment) return false;
+                } else {
+                    let pathIndex = pathSegment.slice(1, -1);
+                    if (!options.PathCheckFuncs[pathIndex](urlSegment)) return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}

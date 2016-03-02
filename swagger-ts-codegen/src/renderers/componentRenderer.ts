@@ -1,4 +1,5 @@
 ﻿module SwaggerCodeGen.Renderers.Component {
+    var Mustache: MustacheStatic = require('mustache');
 
     export class RenderedComponent {
         public name: string;
@@ -13,17 +14,28 @@
         }
     }
 
+    export class RenderedComponents {
+        public Components: RenderedComponent[];
+        public MockHelpers: string;
+
+        constructor() {
+            this.Components = [];
+        }
+    }
+
     export class ComponentRenderer {
         private enumRenderer: Enums.EnumRenderer;
         private modelRenderer: Models.ModelRenderer;
         private serviceRenderer: Services.ServiceRenderer;
         private mockRenderer: Mocks.MockRenderer;
+        private mockHelpersTemplate: string;
 
         constructor(
             enumRendererDefiner: Enums.EnumRenderer | string,
             modelRendererDefiner: Models.ModelRenderer | string,
             serviceRendererDefiner: Services.ServiceRenderer | string,
-            mockRendererDefiner: Mocks.MockRenderer | Mocks.MockTemplates) {
+            mockRendererDefiner: Mocks.MockRenderer | Mocks.MockTemplates,
+            mockHelpersTemplate: string) {
             if (typeof enumRendererDefiner === "string") {
                 this.enumRenderer = new Enums.EnumRenderer(enumRendererDefiner);
             } else {
@@ -47,6 +59,7 @@
             } else {
                 this.mockRenderer = new Mocks.MockRenderer(<Mocks.MockTemplates>mockRendererDefiner);
             }
+            this.mockHelpersTemplate = mockHelpersTemplate;
         }
 
         public RenderComponent(componentView: Generators.Services.Component): RenderedComponent {
@@ -60,10 +73,11 @@
             return result;
         }
 
-        public RenderComponents(componentViews: Generators.Services.Component[]): RenderedComponent[] {
-            var result: RenderedComponent[] = [];
+        public RenderComponents(componentViews: Generators.Services.Component[]): RenderedComponents {
+            var result: RenderedComponents = new RenderedComponents();
+            result.MockHelpers = Mustache.render(this.mockHelpersTemplate, {});
             for (let i = 0; i < componentViews.length; i++) {
-                result.push(this.RenderComponent(componentViews[i]));
+                result.Components.push(this.RenderComponent(componentViews[i]));
             }
             return result;
         }

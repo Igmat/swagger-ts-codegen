@@ -20,6 +20,8 @@ declare module 'swagger-ts-codegen/app' {
 
     };
 
+    var mockHelpersTemplate: string;
+
 }
 
 export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
@@ -224,6 +226,16 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
     }
 
+    class RenderedComponents {
+
+        Components: RenderedComponent[];
+
+        MockHelpers: string;
+
+        constructor();
+
+    }
+
     class ComponentRenderer {
 
         private enumRenderer;
@@ -234,11 +246,13 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         private mockRenderer;
 
-        constructor(enumRendererDefiner: Enums.EnumRenderer | string, modelRendererDefiner: Models.ModelRenderer | string, serviceRendererDefiner: Services.ServiceRenderer | string, mockRendererDefiner: Mocks.MockRenderer | Mocks.MockTemplates);
+        private mockHelpersTemplate;
+
+        constructor(enumRendererDefiner: Enums.EnumRenderer | string, modelRendererDefiner: Models.ModelRenderer | string, serviceRendererDefiner: Services.ServiceRenderer | string, mockRendererDefiner: Mocks.MockRenderer | Mocks.MockTemplates, mockHelpersTemplate: string);
 
         RenderComponent(componentView: Generators.Services.Component): RenderedComponent;
 
-        RenderComponents(componentViews: Generators.Services.Component[]): RenderedComponent[];
+        RenderComponents(componentViews: Generators.Services.Component[]): RenderedComponents;
 
     }
 

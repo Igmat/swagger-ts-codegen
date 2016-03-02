@@ -10,6 +10,7 @@ module SwaggerCodeGen {
     var mockOverrideTemplatePath: string = __dirname + '/../templates/mockOverride.mustache';
     var chanceTemplatePath: string = __dirname + '/../templates/chance.mustache';
     var chanceOverrideTemplatePath: string = __dirname + '/../templates/chanceOverride.mustache';
+    var mockHelpersTemplatePath: string = __dirname + '/../templates/mockHelpers.mustache';
     
     export var modelTemplate: string = fs.readFileSync(modelTemplatePath, 'UTF-8');
     export var enumTemplate: string = fs.readFileSync(enumTemplatePath, 'UTF-8');
@@ -20,5 +21,6 @@ module SwaggerCodeGen {
         chanceTemplate: fs.readFileSync(chanceTemplatePath, 'UTF-8'),
         chanceOverrideTemplate: fs.readFileSync(chanceOverrideTemplatePath, 'UTF-8'),
     }
+    export var mockHelpersTemplate: string = fs.readFileSync(mockHelpersTemplatePath, 'UTF-8');
 }
 export = SwaggerCodeGen;
