@@ -38,6 +38,7 @@
     <Content Include="templates\chanceOverride.mustache" />
     <Content Include="templates\enum.mustache" />
     <Content Include="templates\mock.mustache" />
+    <Content Include="templates\mockHelpers.mustache" />
     <Content Include="templates\mockOverride.mustache" />
     <Content Include="templates\model.mustache" />
     <Content Include="templates\chance.mustache" />

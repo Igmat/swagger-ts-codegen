@@ -18,10 +18,12 @@ export class ExtendedChance extends Chance{
     /*Models*/
     {{#models}}
     public {{name}}(): {{name}} {
-        var result: {{name}} = {
-        {{#properties}}
-            {{name}}: {{#isArray}}this.unique({{/isArray}}this.{{type}}{{#isArray}}, 40){{/isArray}}{{^isArray}}(){{/isArray}}{{#suffixFunc}}.{{content}}{{/suffixFunc}},
-        {{/properties}}
+        var result = (): {{name}} => {
+            return {
+            {{#properties}}
+                {{name}}: {{#isArray}}this.unique({{/isArray}}this.{{type}}{{#isArray}}, 40){{/isArray}}{{^isArray}}(){{/isArray}}{{#suffixFunc}}.{{content}}{{/suffixFunc}},
+            {{/properties}}
+            };
         };
         return ExtendedChanceOverride.{{name}}(result, this);
     }

@@ -419,7 +419,8 @@ var SwaggerCodeGen;
                     methodView.httpVerb = httpVerb.toUpperCase();
                     methodView.link = link;
                     methodView.operationId = operation.operationId.slice(operation.operationId.lastIndexOf('.') + 1);
-                    methodView.description = operation.description;
+                    methodView.description = operation.summary;
+                    methodView.returns = operation.description;
                     if (operation.parameters) {
                         for (var i = 0; i < operation.parameters.length; i++) {
                             var parameter = operation.parameters[i];

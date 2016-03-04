@@ -142,6 +142,8 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         description: string;
 
+        returns: string;
+
         pathParameters: ParameterView[];
 
         queryParameters: ParameterView[];

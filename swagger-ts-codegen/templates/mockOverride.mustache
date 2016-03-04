@@ -3,7 +3,7 @@
 
     {{#methods}}
     /*-- Mock override for: {{httpVerb}} {{{link}}} --*/
-    public static {{operationId}}(method: string, url: string, data: string | Object, headers: Object, result: [number, string | Object, Object, string]): [number, string | Object, Object, string] => {
+    public static {{operationId}}(method: string, url: string, data: string | Object, headers: Object, result: [number, string | Object, Object, string]): [number, string | Object, Object, string] {
         return result;
     }
 
