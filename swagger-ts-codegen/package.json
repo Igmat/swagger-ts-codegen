@@ -1,6 +1,6 @@
 {
   "name": "swagger-ts-codegen",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "swagger-ts-codegen",
   "main": "dist/app.js",
   "author": {

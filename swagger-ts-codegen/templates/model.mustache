@@ -2,9 +2,9 @@
 export interface {{name}}{
     {{#properties}}
         /**
-        * {{{& description}}}
+        * {{{description}}}
         */
-        {{name}}{{^isRequired}}?{{/isRequired}};: {{type}}{{#isArray}}[]{{/isArray}};
+        {{name}}{{^isRequired}}?{{/isRequired}}: {{type}}{{#isArray}}[]{{/isArray}};
     {{/properties}}
     
 }
