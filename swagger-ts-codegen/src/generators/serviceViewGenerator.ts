@@ -307,27 +307,34 @@ module SwaggerCodeGen.Generators.Services {
                             break;
 
                         case 'query':
-                            if (parameter.enum) {//for inline enum
-                                var enumView = this.enumGenerator.GenerateEnum(parameter.name, parameter.enum, methodView.operationId);
-                                parameterView.type = enumView.name;
-                                result.enums[enumView.name] = enumView;
+                            //next isn't implemented fully by spec, but uses some sort of mixing OpenAPI 2.0 and OpenAPI 3.0 spec instead
+                            //it supports https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#parameterObject (schema.$ref part) from OpenApi.next
+                            //but also supports https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterObject from OpenApi.master
+                            if (parameter.schema && parameter.schema.$ref) {
+                                parameterView.type = parameter.schema.$ref.slice("#/definitions/".length);
                             } else {
-                                //TODO: may be reference type are needed (for example: defined enums(but they could have string type))
-                                switch (parameter.type) {//for primitives
-                                    case "boolean":
-                                        parameterView.type = "boolean";
-                                        break;
-                                    case "string":
-                                        parameterView.type = "string";
-                                        break;
-                                    case "number":
-                                        parameterView.type = "number";
-                                        break;
-                                    case "integer":
-                                        parameterView.type = "number";
-                                        break;
-                                    default:
-                                        throw new Error("Unsupported type of query parameter");
+                                if (parameter.enum) {//for inline enum
+                                    var enumView = this.enumGenerator.GenerateEnum(parameter.name, parameter.enum, methodView.operationId);
+                                    parameterView.type = enumView.name;
+                                    result.enums[enumView.name] = enumView;
+                                } else {
+                                    //TODO: may be reference type are needed (for example: defined enums(but they could have string type))
+                                    switch (parameter.type) {//for primitives
+                                        case "boolean":
+                                            parameterView.type = "boolean";
+                                            break;
+                                        case "string":
+                                            parameterView.type = "string";
+                                            break;
+                                        case "number":
+                                            parameterView.type = "number";
+                                            break;
+                                        case "integer":
+                                            parameterView.type = "number";
+                                            break;
+                                        default:
+                                            throw new Error("Unsupported type of query parameter");
+                                    }
                                 }
                             }
                             parameterView.optional = !parameter.required;//I am not sure that our logic is affected if query parameter is required TODO: check it

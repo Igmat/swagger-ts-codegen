@@ -492,27 +492,32 @@ var SwaggerCodeGen;
                                     methodView.pathParameters.push(parameterView);
                                     break;
                                 case 'query':
-                                    if (parameter.enum) {
-                                        var enumView = this.enumGenerator.GenerateEnum(parameter.name, parameter.enum, methodView.operationId);
-                                        parameterView.type = enumView.name;
-                                        result.enums[enumView.name] = enumView;
+                                    if (parameter.schema && parameter.schema.$ref) {
+                                        parameterView.type = parameter.schema.$ref.slice("#/definitions/".length);
                                     }
                                     else {
-                                        switch (parameter.type) {
-                                            case "boolean":
-                                                parameterView.type = "boolean";
-                                                break;
-                                            case "string":
-                                                parameterView.type = "string";
-                                                break;
-                                            case "number":
-                                                parameterView.type = "number";
-                                                break;
-                                            case "integer":
-                                                parameterView.type = "number";
-                                                break;
-                                            default:
-                                                throw new Error("Unsupported type of query parameter");
+                                        if (parameter.enum) {
+                                            var enumView = this.enumGenerator.GenerateEnum(parameter.name, parameter.enum, methodView.operationId);
+                                            parameterView.type = enumView.name;
+                                            result.enums[enumView.name] = enumView;
+                                        }
+                                        else {
+                                            switch (parameter.type) {
+                                                case "boolean":
+                                                    parameterView.type = "boolean";
+                                                    break;
+                                                case "string":
+                                                    parameterView.type = "string";
+                                                    break;
+                                                case "number":
+                                                    parameterView.type = "number";
+                                                    break;
+                                                case "integer":
+                                                    parameterView.type = "number";
+                                                    break;
+                                                default:
+                                                    throw new Error("Unsupported type of query parameter");
+                                            }
                                         }
                                     }
                                     parameterView.optional = !parameter.required;
