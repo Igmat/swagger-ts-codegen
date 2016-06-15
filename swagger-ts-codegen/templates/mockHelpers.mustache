@@ -18,14 +18,19 @@
         QueryCheckFuncs: IQueryCheckFuncs;
     }
 
-    export function IsUrlMatches(url: string, options: IUrlMatchOptions) {
+    export function GetQueryParameters(url: string): IQueryParameters {
+        let queryParameters: IQueryParameters = {};
         let querySegments = (url.indexOf("?") >= 0) ?
             url.slice(url.indexOf("?") + 1).split("&") :
             [];
-        let queryParameters: IQueryParameters = {};
         for (var query of querySegments) {
             queryParameters[query.slice(0, query.indexOf("="))] = query.slice(query.indexOf("=") + 1);
         }
+        return queryParameters;
+    }
+
+    export function IsUrlMatches(url: string, options: IUrlMatchOptions) {
+        let queryParameters = GetQueryParameters(url);
         for (var parameterName in options.QueryCheckFuncs) {
             if (!options.QueryCheckFuncs[parameterName](queryParameters[parameterName])) return false;
         }
