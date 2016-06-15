@@ -96,6 +96,8 @@ export = SwaggerCodeGen; module SwaggerCodeGen.Generators.Enums {
 
         isArray: boolean;
 
+        isRequired: boolean;
+
         constructor();
 
     }

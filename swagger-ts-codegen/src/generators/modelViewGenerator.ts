@@ -24,9 +24,11 @@
         public description: string;
         public type: string;
         public isArray: boolean;
+        public isRequired: boolean;
 
         constructor() {
             this.isArray = false;
+            this.isRequired = false;
         }
     }
 
@@ -108,6 +110,7 @@
                     }
                 }
                 propertyView.description = propertyDesc.description;
+                propertyView.isRequired = (definition.required && definition.required.indexOf(property) != -1);
                 modelView.properties.push(propertyView);
             }
 

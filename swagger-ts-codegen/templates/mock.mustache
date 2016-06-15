@@ -12,7 +12,7 @@ export function {{name}}Requests($httpBackend: ng.IHttpBackendService) {
         },
         QueryCheckFuncs: {
             {{#queryParameters}}
-            {{name}}: (value: any) => {
+            '{{name}}': (value: any) => {
                 {{#optional}}return true;{{/optional}}{{^optional}}if (value == undefined) return false;
                 {{#isNumber}}return !isNaN(Number(value));{{/isNumber}}{{^isNumber}}return true;{{/isNumber}}{{/optional}}
             },

@@ -22,11 +22,11 @@ export class {{name}}Service{
 
     {{#methods}}
     {{=<% %>=}}/**
-    * <%description%><%#pathParameters%>
-    * @param {<%type%>} <%name%> - <%description%><%/pathParameters%><%#queryParameters%>
-    * @param {<%type%>} <%name%> - <%description%><%/queryParameters%><%#bodyParameter%>
-    * @param {<%type%>} <%name%> - <%description%><%/bodyParameter%>
-    * @return {<%response%>} - <%returns%>
+    * <%& description%><%#pathParameters%>
+    * @param {<%type%>} <%name%> - <%& description%><%/pathParameters%><%#queryParameters%>
+    * @param {<%type%>} <%name%> - <%& description%><%/queryParameters%><%#bodyParameter%>
+    * @param {<%type%>} <%name%> - <%& description%><%/bodyParameter%>
+    * @return {<%response%>} - <%& returns%>
     */<%={{ }}=%>
     public {{operationId}}({{#pathParameters}}
         {{name}}: {{type}}, {{/pathParameters}}{{#queryParameters}}

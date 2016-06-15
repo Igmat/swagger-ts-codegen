@@ -120,6 +120,7 @@ var SwaggerCodeGen;
             var PropertyView = (function () {
                 function PropertyView() {
                     this.isArray = false;
+                    this.isRequired = false;
                 }
                 return PropertyView;
             })();
@@ -196,6 +197,7 @@ var SwaggerCodeGen;
                             }
                         }
                         propertyView.description = propertyDesc.description;
+                        propertyView.isRequired = (definition.required && definition.required.indexOf(property) != -1);
                         modelView.properties.push(propertyView);
                     }
                     return modelView;
