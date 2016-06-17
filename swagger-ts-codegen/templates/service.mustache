@@ -36,7 +36,7 @@ export class {{name}}Service{
 
         const path = this.basePath + '{{{link}}}'{{#pathParameters}}
             .replace('{' + '{{name}}' + '}', {{name}}.toString()){{/pathParameters}};{{#pathParameters}}
-        if (!{{name}}) {
+        if (angular.isUndefined({{name}}) || {{name}} === null) {
             throw new Error('Missing required parameter {{name}} when calling {{operationId}}');
         }{{/pathParameters}}
 
