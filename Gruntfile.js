@@ -15,16 +15,10 @@
                 fast: 'never'
             },
             app: {
-                tsconfig: {
-                    overwriteFilesGlob: true
-                },
                 src: ['<%= yeoman.app %>/app.ts'],
                 outDir: '<%= yeoman.dist %>/'
             },
             test: {
-                tsconfig: {
-                    overwriteFilesGlob: true
-                },
                 src: ['<%= yeoman.test %>/test.ts'],
                 outDir: '<%= yeoman.dist %>/'
             }

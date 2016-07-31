@@ -13,9 +13,10 @@
         "node_modules"
     ],
     "filesGlob": [
-        "test/test.ts"
+        "typings/index.d.ts",
+        "src/app.ts"
     ],
     "files": [
-        "test/test.ts"
+        "src/app.ts"
     ]
 }

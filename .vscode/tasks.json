@@ -11,9 +11,7 @@
             "isBuildCommand": true,
             "isWatching": false,
             "problemMatcher": [
-                "$lessCompile",
-                "$tsc",
-                "$jshint"
+                "$tsc"
             ]
         },
         {
