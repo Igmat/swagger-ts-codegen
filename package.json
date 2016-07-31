@@ -3,10 +3,7 @@
   "version": "0.0.30",
   "description": "swagger-ts-codegen",
   "main": "dist/app.js",
-  "author": {
-    "name": "Игорь",
-    "email": ""
-  },
+  "author": "Ihor Chulinda <ichulinda@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git://github.com/Igmat/swagger-ts-codegen"
